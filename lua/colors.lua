@@ -4,7 +4,7 @@
 -- http://sputnik.freewisdom.org/lib/colors/
 --
 -- License: MIT/X
--- 
+--
 -- (c) 2008 Yuri Takhteyev (yuri@freewisdom.org) *
 --
 -- * rgb_to_hsl() implementation was contributed by Markus Fleck-Graffe.
@@ -40,7 +40,7 @@ M.new = new
 -----------------------------------------------------------------------------
 -- Converts an HSL triplet to RGB
 -- (see http://homepages.cwi.nl/~steven/css/hsl.html).
--- 
+--
 -- @param H              hue (0-360)
 -- @param S              saturation (0.0-1.0)
 -- @param L              lightness (0.0-1.0)
@@ -50,9 +50,9 @@ M.new = new
 local function hsl_to_rgb(h, s, L)
    h = h/360
    local m1, m2
-   if L<=0.5 then 
+   if L<=0.5 then
       m2 = L*(s+1)
-   else 
+   else
       m2 = L+s-L*s
    end
    m1 = L*2-m2
@@ -60,11 +60,11 @@ local function hsl_to_rgb(h, s, L)
    local function _h2rgb(m1, m2, h)
       if h<0 then h = h+1 end
       if h>1 then h = h-1 end
-      if h*6<1 then 
+      if h*6<1 then
          return m1+(m2-m1)*h*6
-      elseif h*2<1 then 
-         return m2 
-      elseif h*3<2 then 
+      elseif h*2<1 then
+         return m2
+      elseif h*3<2 then
          return m1+(m2-m1)*(2/3-h)*6
       else
          return m1
@@ -78,7 +78,7 @@ M.hsl_to_rgb = hsl_to_rgb
 -----------------------------------------------------------------------------
 -- Converts an RGB triplet to HSL.
 -- (see http://easyrgb.com)
--- 
+--
 -- @param r              red (0.0-1.0)
 -- @param g              green (0.0-1.0)
 -- @param b              blue (0.0-1.0)
@@ -112,7 +112,7 @@ M.rgb_to_hsl = rgb_to_hsl
 
 -- already local, see at the bottom
 function rgb_string_to_hsl(rgb)
-   return rgb_to_hsl(tonumber(rgb:sub(2,3), 16)/255, 
+   return rgb_to_hsl(tonumber(rgb:sub(2,3), 16)/255,
                      tonumber(rgb:sub(4,5), 16)/255,
                      tonumber(rgb:sub(6,7), 16)/255)
 end
@@ -150,14 +150,14 @@ end
 --
 -- @return               a new instance of Color
 -----------------------------------------------------------------------------
-function Color:complementary() 
+function Color:complementary()
    return self:hue_offset(180)
 end
 
 -----------------------------------------------------------------------------
 -- Creates two neighboring colors (by hue), offset by "angle".
 --
--- @param angle          the difference in hue between this color and the 
+-- @param angle          the difference in hue between this color and the
 --                       neighbors
 -- @return               two new instances of Color
 -----------------------------------------------------------------------------
@@ -171,7 +171,7 @@ end
 --
 -- @return               two new instances of Color
 -----------------------------------------------------------------------------
-function Color:triadic() 
+function Color:triadic()
    return self:neighbors(120)
 end
 
@@ -204,7 +204,7 @@ end
 -----------------------------------------------------------------------------
 function Color:desaturate_by(r)
    return new(self.H, self.S*r, self.L)
-end	      
+end
 
 -----------------------------------------------------------------------------
 -- Creates a new color with lightness set to a new value.
@@ -250,7 +250,7 @@ end
 -- @return               a table with n values containing the new colors
 -----------------------------------------------------------------------------
 function Color:tints(n)
-   local f = function (color, i, n) 
+   local f = function (color, i, n)
                 return color:lighten_to(color.L + (1-color.L)/n*i)
              end
    return self:variations(f, n)
@@ -263,7 +263,7 @@ end
 -- @return               a table with n values containing the new colors
 -----------------------------------------------------------------------------
 function Color:shades(n)
-   local f = function (color, i, n) 
+   local f = function (color, i, n)
                 return color:lighten_to(color.L - (color.L)/n*i)
              end
    return self:variations(f, n)
