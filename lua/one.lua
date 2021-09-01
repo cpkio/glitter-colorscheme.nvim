@@ -1,4 +1,7 @@
 -- vim:tabstop=4
+
+package.loaded["one"] = nil
+
 local colors = require('colors')
 
 local one = {}
@@ -53,315 +56,299 @@ local saturation_threshold = 0.25
 -- vice versa
 local lightness_threshold = 0.48
 
+local colorful_threshold = 0.17
+
 -- @hue_spread means color distance between colors
 -- Has to be calculated with lightness in mind
-local hue_spread = 40
+local hue_spread = 24
+local spread = 0.1
 
-local colourful_threshold = 0.17
+-------------------------------------------
+-- Новая версия фильтров
+-------------------------------------------
 
-
---[[
--- Получать нужные цвета или их пары нужно по следующим схемам:
--- Обычный текст: нейтральный, а значит отбираем цвета
--- - не насыщенные (в соответствии с @saturation_threshold);
--- - сортируем их по светимости и отбираем не самый яркий для фона;
--- - для текста берём верхние по яркости и отбираем наименее цветистый
-]]
-
----------------------------------------------
--- SORT BY HUE
----------------------------------------------
-function sort_by_hue(e1, e2)
-	local h1, s1, l1 = colors.rgb_string_to_hsl(e1[2])
-	local h2, s2, l2 = colors.rgb_string_to_hsl(e2[2])
-	return h1 < h2, h1, h2
-end
-
----------------------------------------------
--- SORT BY LIGNTNESS
----------------------------------------------
-function sort_by_light_asc(e1, e2)
-	local h1, s1, l1 = colors.rgb_string_to_hsl(e1[2])
-	local h2, s2, l2 = colors.rgb_string_to_hsl(e2[2])
-	return l1 < l2, l1, l2
-end
-
-function sort_by_light_dec(e1, e2)
-	local h1, s1, l1 = colors.rgb_string_to_hsl(e1[2])
-	local h2, s2, l2 = colors.rgb_string_to_hsl(e2[2])
-	return l1 > l2, l1, l2
-end
-
----------------------------------------------
--- SORT BY SATURATION
----------------------------------------------
-function sort_by_sat_asc(e1, e2)
-	local h1, s1, l1 = colors.rgb_string_to_hsl(e1[2])
-	local h2, s2, l2 = colors.rgb_string_to_hsl(e2[2])
-	return s1 < s2, s1, s2
-end
-
-function sort_by_sat_dec(e1, e2)
-	local h1, s1, l1 = colors.rgb_string_to_hsl(e1[2])
-	local h2, s2, l2 = colors.rgb_string_to_hsl(e2[2])
-	return s1 > s2, s1, s2
-end
-
----------------------------------------------
--- SORT BY RED COLOR
----------------------------------------------
-function sort_by_red_asc(e1, e2)
-	local r1, g1, b1 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
-	local r2, g2, b2 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
-	return r1 < r2, r1, r2
-end
-
-function sort_by_red_dec(e1, e2)
-	local r1, g1, b1 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
-	local r2, g2, b2 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
-	return r1 > r2, r1, r2
-end
-
----------------------------------------------
--- SORT BY GREEN COLOR
----------------------------------------------
-function sort_by_green_asc(e1, e2)
-	local r1, g1, b1 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
-	local r2, g2, b2 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
-	return g1 < g2, g1, g2
-end
-
-function sort_by_green_dec(e1, e2)
-	local r1, g1, b1 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
-	local r2, g2, b2 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
-	return g1 > g2, g1, g2
-end
-
----------------------------------------------
--- SORT BY BLUE COLOR
----------------------------------------------
-function sort_by_blue_asc(e1, e2)
-	local r1, g1, b1 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
-	local r2, g2, b2 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
-	return b1 < b2, b1, b2
-end
-
-function sort_by_blue_dec(e1, e2)
-	local r1, g1, b1 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
-	local r2, g2, b2 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
-	return b1 > b2, b1, b2
-
-end
-
----------------------------------------------
--- GET "MOST" COLOR
----------------------------------------------
--- DARK
-darkest = function()
-	table.sort(one.palette, sort_by_light_asc)
-	return one.palette[1]
-end
-
-most_dark = function()
-	table.sort(one.palette, sort_by_light_asc)
-	return one.palette[2]
-end
-
-mostly_dark = function()
-	table.sort(one.palette, sort_by_light_asc)
-	return one.palette[3]
-end
-
--- LIGHT
-brightest = function()
-	table.sort(one.palette, sort_by_light_dec)
-	return one.palette[1]
-end
-
-most_bright = function()
-	table.sort(one.palette, sort_by_light_dec)
-	return one.palette[2]
-end
-
-mostly_bright = function()
-	table.sort(one.palette, sort_by_light_dec)
-	return one.palette[3]
-end
-
--- SATURATION MOST
-colorish = function()
-	table.sort(one.palette, sort_by_sat_dec)
-	return one.palette[1]
-end
-
-most_colorish = function()
-	table.sort(one.palette, sort_by_sat_dec)
-	return one.palette[2]
-end
-
-mostly_colorish = function()
-	table.sort(one.palette, sort_by_sat_dec)
-	return one.palette[3]
-end
-
--- SATURATION LAST
-greyish = function()
-	table.sort(one.palette, sort_by_sat_asc)
-	return one.palette[1]
-end
-
-most_greyish = function()
-	table.sort(one.palette, sort_by_sat_asc)
-	return one.palette[2]
-end
-
-mostly_greyish = function()
-	table.sort(one.palette, sort_by_sat_asc)
-	return one.palette[3]
-end
-
--- RED
-reddest = function()
-	table.sort(one.palette, sort_by_red_dec)
-	return one.palette[1]
-end
-
-most_red = function()
-	table.sort(one.palette, sort_by_red_dec)
-	return one.palette[2]
-end
-
-mostly_red = function()
-	table.sort(one.palette, sort_by_red_dec)
-	return one.palette[3]
-end
-
--- GREEN
-greenest = function()
-	table.sort(one.palette, sort_by_green_dec)
-	return one.palette[1]
-end
-
-most_green = function()
-	table.sort(one.palette, sort_by_green_dec)
-	return one.palette[2]
-end
-
-mostly_green = function()
-	table.sort(one.palette, sort_by_green_dec)
-	return one.palette[3]
-end
-
--- BLUE
-bluest = function()
-	table.sort(one.palette, sort_by_blue_dec)
-	return one.palette[1]
-end
-
-most_blue = function()
-	table.sort(one.palette, sort_by_blue_dec)
-	return one.palette[2]
-end
-
-mostly_blue = function()
-	table.sort(one.palette, sort_by_blue_dec)
-	return one.palette[3]
-end
-
-top_blue = function()
-	local result = {}
-	table.sort(one.palette, sort_by_blue_dec)
-	for i = 1, margin do table.insert(result, one.palette[i]) end
-	return result
-end
-
--- Take center part of a sorted palette: minus @margin from top and from bottom
-function trim(tbl, sorter, margin)
-	local result = {}
-	table.sort(tbl, sorter)
-	for i = margin + 1, #tbl - margin do table.insert(result, tbl[i]) end
-	return result
-end
-
-function slice(tbl, sorter, length)
-	local result = {}
-	if length > #tbl then length = #tbl end
-	for i = 1, length do table.insert(result, tbl[i]) end
-	return result
-end
-
-function normalize(tbl, fun)
-	result = clone(tbl)
-	table.sort(result, fun)
-	local _, min, _ = fun(result[1], result[#result])
-	local _, _, max = fun(result[1], result[#result])
-	if min > max then
-		local _t = min
-		min = max; max = _t
-	end
-	for i, _ in ipairs(result) do
-	local _, value, _ = fun(result[i], result[#result])
-		result[i][3] = (value-min)/(max-min)
-	end
-	return result
-end
-
-function select_dark(item)
-	local _, _, l = colors.rgb_string_to_hsl(item[2])
-	return l <= lightness_threshold
-end
-
-function select_light(item)
-	local _, _, l = colors.rgb_string_to_hsl(item[2])
-	return l >= lightness_threshold * 1.3
-end
-
-function select_dull(item)
-	local _, s, _ = colors.rgb_string_to_hsl(item[2])
-	return s <= colourful_threshold
-end
-
-function select_colourfull(item)
-	local _, s, _ = colors.rgb_string_to_hsl(item[2])
-	return s >= colourful_threshold
-end
-
-function filter(tbl, ...)
+function dark(tbl, value)
 	local result = clone(tbl)
-	for _, fn in ipairs({...}) do
+	value = value or lightness_threshold
 	::restart::
-		for i, item in ipairs(result) do
-			if not fn(item) then table.remove(result, i); goto restart end
-		end
+	for i, item in ipairs(result) do
+		local _, _, l = colors.rgb_string_to_hsl(item[2])
+		if not (l <= value + spread) then table.remove(result, i); goto restart end
+	end
+	return result
+end
+
+function light(tbl, value)
+	local result = clone(tbl)
+	value = value or lightness_threshold
+	::restart::
+	for i, item in ipairs(result) do
+		local _, _, l = colors.rgb_string_to_hsl(item[2])
+		if not (l >= value - spread) then table.remove(result, i); goto restart end
+	end
+	return result
+end
+
+function dull(tbl, value)
+	local result = clone(tbl)
+	value = value or colorful_threshold
+	::restart::
+	for i, item in ipairs(result) do
+		local _, s, l = colors.rgb_string_to_hsl(item[2])
+		if not (s <= value + spread) or not (l >= 0.9)  then table.remove(result, i); goto restart end
+	end
+	return result
+end
+
+function colorful(tbl, value)
+	local result = clone(tbl)
+	value = value or colorful_threshold
+	::restart::
+	for i, item in ipairs(result) do
+		local _, s, l = colors.rgb_string_to_hsl(item[2])
+		if not (s >= value - spread) or (l >= 0.9) then table.remove(result, i); goto restart end
+	end
+	return result
+end
+
+function hue(tbl, angle)
+	local result = clone(tbl)
+	angle = angle or 180
+	::reiterate::
+	local anglePlus = angle + hue_spread
+	local angleMinus = angle - hue_spread
+	if (angle + hue_spread > 360) then anglePlus = angle + hue_spread - 360 end
+	if (angle - hue_spread < 0) then angleMinus = angle - hue_spread + 360 end
+	::restart::
+	for i, item in ipairs(result) do
+		local h, _, _ = colors.rgb_string_to_hsl(item[2])
+		if not (h <= anglePlus) and not (h >= angleMinus) then table.remove(result, i); goto restart end
+	end
+	if #result == 0 then hue_spread = hue_spread + 12; goto reiterate end
+	return result
+end
+
+-- Взятие верхних позиций таблицы
+function pop(tbl, amount)
+	local result = {}
+	amount = amount or 1
+	for i = 1, amount do table.insert(result, tbl[i]) end
+	return result
+end
+
+function slice(tbl)
+end
+
+-- Взятие нижних позиций из таблицы
+function pop_back(tbl, amount)
+	local result = {}
+	amount = amount or 1
+	for i = #tbl - amount + 1, #tbl do table.insert(result, tbl[i]) end
+	return result
+end
+
+function r(tbl, value)
+end
+
+function g(tbl, value)
+end
+
+function b(tbl, value)
+end
+
+function sort_by_hue(tbl)
+  result = clone(tbl)
+  table.sort(tbl, function(e1, e2)
+	h1, _, _ = colors.rgb_string_to_hsl(e1[2])
+	h2, _, _ = colors.rgb_string_to_hsl(e2[2])
+	return h1 < h2
+  end)
+  return result
+end
+
+function sort_by_saturation(tbl)
+  result = clone(tbl)
+  table.sort(result, function(e1, e2)
+	_, s1, _ = colors.rgb_string_to_hsl(e1[2])
+	_, s2, _ = colors.rgb_string_to_hsl(e2[2])
+	return s1 < s2
+  end)
+  return result
+end
+
+function sort_by_lightness(tbl)
+  result = clone(tbl)
+  table.sort(result, function(e1, e2)
+	_, _, l1 = colors.rgb_string_to_hsl(e1[2])
+	_, _, l2 = colors.rgb_string_to_hsl(e2[2])
+	return l1 < l2
+  end)
+  return result
+end
+
+function sort_by_red(tbl)
+  result = clone(tbl)
+  table.sort(result, function(e1, e2)
+	r1, _, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
+	r2, _, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
+	return r1 < r2
+  end)
+  return result
+end
+
+function sort_by_green(tbl)
+  result = clone(tbl)
+  table.sort(result, function(e1, e2)
+	_, g1, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
+	_, g2, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
+	return g1 < g2
+  end)
+  return result
+end
+
+function sort_by_blue(tbl)
+  result = clone(tbl)
+  table.sort(result, function(e1, e2)
+	_, _, b1 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
+	_, _, b2 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
+	return b1 < b2
+  end)
+  return result
+end
+
+-- @index is a base color, from which the distance is calculated
+function distanceHSL(tbl, index, value)
+	if index > #tbl then index = #tbl end
+	local value = value or 1.2
+	local h1, s1, l1 = colors.rgb_string_to_hsl(result[index][2])
+	::restart::
+	for i, item in ipairs(result) do
+	  local h2, s2, l2 = colors.rgb_string_to_hsl(result[i][2])
+	  local distance = math.sqrt((h2 - h1)^2 + (s2 - s1)^2 + (l2 - l1)^2)
+	  if (distance > value) then table.remove(result, i); goto restart end
+	end
+	return result
+end
+
+function distanceHL(tbl, index, value)
+	local result = clone(tbl)
+	local index = index or 1
+	if index > #tbl then index = #tbl end
+	local value = value or 1.2
+	local h1, _, l1 = colors.rgb_string_to_hsl(result[index][2])
+	::restart::
+	for i, item in ipairs(result) do
+	  local h2, _, l2 = colors.rgb_string_to_hsl(result[i][2])
+	  local distance = math.sqrt((h2 - h1)^2 + (l2 - l1)^2)
+	  if (distance > value) then table.remove(result, i); goto restart end
+	end
+	return result
+end
+
+function distanceHS(tbl, index, value)
+	local result = clone(tbl)
+	local index = index or 1
+	if index > #tbl then index = #tbl end
+	local value = value or 1.2
+	local h1, s1, _ = colors.rgb_string_to_hsl(result[index][2])
+	::restart::
+	for i, item in ipairs(result) do
+	  local h2, s2, _ = colors.rgb_string_to_hsl(result[i][2])
+	  local distance = math.sqrt((h2 - h1)^2 + (s2 - s1)^2)
+	  if (distance > value) then table.remove(result, i); goto restart end
+	end
+	return result
+end
+
+function distanceSL(tbl, index, value)
+	local result = clone(tbl)
+	local index = index or 1
+	if index > #result then index = #result end
+	local value = value or 1.2
+	local _, s1, l1 = colors.rgb_string_to_hsl(result[index][2])
+	::restart::
+	for i, item in ipairs(result) do
+	  local _, s2, l2 = colors.rgb_string_to_hsl(item[2])
+	  local distance = math.sqrt((s2 - s1)^2 + (l2 - l1)^2)
+	  if (distance > value) then table.remove(result, i); goto restart end
 	end
 	return result
 end
 
 function print_colors(tbl, text)
-  print(text)
-  for _, sub in ipairs(tbl) do
-	  local h1, s1, l1 = colors.rgb_string_to_hsl(sub[2])
-	  print(string.format("%s | %.2f | %.2f | %.2f | w:%.2f", sub[2], h1, s1, l1, sub[3]))
-  end
+	local result = ""
+	result = result .. text
+	result = result .. string.format("%7s | %6s | %4s | %4s | %5s | %5s | %5s\n", "Hex", "H", "S", "L", "R", "G", "B")
+	for _, item in ipairs(tbl) do
+		h, s, l = colors.rgb_string_to_hsl(item[2])
+		r, g, b = colors.hsl_to_rgb(colors.rgb_string_to_hsl(item[2]))
+		result = result .. string.format("%7s | %-6.2f | %.2f | %.2f | %4.3f | %4.3f | %4.3f\n", item[2], h, s, l, r, g, b)
+	end
+	return result
+end
+
+function filter(tbl, ...)
+	local result = clone(tbl)
+	local file = io.open('r:\\colorlog.txt', "a")
+	io.output(file)
+	for i, fn in ipairs({...}) do
+		local func = fn[1]
+		local param = fn[2]
+		local param2 = fn[3]
+		result = func(result, param, param2)
+	  	io.write(print_colors(result, string.format('\ncall #%d -------------\n', i)))
+	end
+	io.close(file)
+	return result
 end
 
 function one.highlight(group, color)
-	local style = color.style and "gui=" .. color.style or "gui=NONE"
-	local fg = color.fg and "ctermfg=" .. color.fg[1] .. " guifg=" .. color.fg[2] or "guifg=NONE"
-	local bg = color.bg and "ctermbg=" .. color.bg[1] .. " guibg=" .. color.bg[2] or "guibg=NONE"
+	local style = color.style and "cterm=" .. color.style[1][1] .. " gui=" .. color.style[1][2] or "cterm=NONE gui=NONE"
+
+	local color_fg
+	if color.fg then
+	  	if #color.fg > 1 then color_fg = color.fg[math.random(1, #color.fg)] else color_fg = color.fg[1] end
+	end
+	local fg = color.fg and "ctermfg=" .. color_fg[1] .. " guifg=" .. color_fg[2] or "ctermfg=NONE guifg=NONE"
+
+	local color_bg
+	if color.bg then
+	  	if #color.bg > 1 then color_bg = color.bg[math.random(1, #color.bg)] else color_bg = color.bg[1] end
+  	end
+	local bg = color.bg and "ctermbg=" .. color_bg[1] .. " guibg=" .. color_bg[2] or "ctermbg=NONE guibg=NONE"
+
 	local sp = color.sp and "guisp=" .. color.sp or ""
+
 	vim.api.nvim_command("highlight " .. group .. " " .. style .. " " .. fg .. " " .. bg .. " " .. sp)
 end
 
+-- SELECTING THE COLORS FROM PALETTE
+
+one.none = {{"NONE", "NONE"}}
+one.underline = {{"underline", "undercurl"}}
+
+one.default_fg = filter(one.palette, {light}, {sort_by_lightness}, {pop_back, 2}, {pop})
+one.default_bg = filter(one.palette, {dark}, {sort_by_lightness}, {distanceSL, 2, 0.1}, {pop_back, 2}, {pop})
+
+one.brighter_bg = filter(one.palette, {dark}, {sort_by_lightness}, {distanceSL, 2, 0.1}, {pop_back})
+
+one.dark_bg = filter(one.palette, {dark}, {sort_by_lightness}, {pop})
+one.bright_fg = filter(one.palette, {light}, {sort_by_lightness}, {pop_back})
+
+one.red = filter(one.palette, {light}, {hue, 0}, { pop_back, 2 })
+one.blue = filter(one.palette, {colorful}, {sort_by_blue}, { pop_back, 2 })
+
+one.gray = filter(one.palette, { sort_by_saturation }, { pop })
+
 function one.load_syntax()
 	local syntax = {
-		Normal =	{fg = normalize(filter(one.palette, select_light), sort_by_light_dec)[2], bg = normalize(filter(one.palette, select_dark), sort_by_light_asc)[2]},
-		-- Terminal =	{fg = lvim.fg, bg = lvim.bg},
-		-- SignColumn =	{fg = mostly_dark(), bg = mostly_light()},
-		-- FoldColumn =			{fg = lvim.color_10, bg = lvim.black},
-		-- VertSplit =	{fg = lvim.black, bg = lvim.bg},
+		Normal =		{fg = one.default_fg, bg = one.default_bg},
+		Terminal =		{fg = one.default_fg, bg = one.none},
+		SignColumn =	{fg = one.default_fg, bg = one.none},
+		FoldColumn =	{fg = one.default_fg, bg = one.none},
+		VertSplit =	{fg = one.dark_bg, bg = one.none},
 		-- Folded =	{fg = lvim.color_12, bg = lvim.bg_highlight},
-		-- EndOfBuffer =			{fg = lvim.bg, bg = lvim.none},
+		EndOfBuffer =			{fg = one.default_bg, bg = one.none},
 		-- IncSearch =	{fg = lvim.base0, bg = lvim.color_13, style = lvim.none},
 		-- Search =	{fg = lvim.base0, bg = lvim.color_13},
 		-- ColorColumn =			{fg = lvim.none, bg = lvim.bg_highlight},
@@ -372,40 +359,40 @@ function one.load_syntax()
 		-- lCursor =	{fg = lvim.none, bg = lvim.none, style = "reverse"},
 		-- CursorIM =	{fg = lvim.none, bg = lvim.none, style = "reverse"},
 		-- CursorColumn =			{fg = lvim.none, bg = lvim.bg_highlight},
-		-- CursorLine =			{fg = lvim.none, bg = lvim.bg_highlight},
-		-- LineNr =	{fg = filter(one.palette, select_light)[2]},
+		CursorLine =			{fg = one.bright_fg, bg = one.brighter_bg, style=one.none},
+		LineNr =	{fg = one.default_fg},
 		-- qfLineNr =	{fg = lvim.color_10},
-		-- CursorLineNr =			{fg = lvim.color_10},
+		CursorLineNr =			{fg = one.bright_fg},
 		-- DiffAdd =	{fg = lvim.black, bg = lvim.color_6},
 		-- DiffChange =			{fg = lvim.black, bg = lvim.color_3},
 		-- DiffDelete =			{fg = lvim.black, bg = lvim.color_0},
 		-- DiffText =	{fg = lvim.black, bg = lvim.fg},
 		-- Directory =	{fg = lvim.color_8, bg = lvim.none},
-		-- ErrorMsg =	{fg = lvim.color_error, bg = lvim.none},
-		-- WarningMsg =			{fg = lvim.color_warning, bg = lvim.NONE},
+		ErrorMsg =			{fg = one.dark_bg, bg = one.red},
+		WarningMsg =			{fg = one.red, bg = one.none},
 		-- ModeMsg =	{fg = lvim.color_6, bg = lvim.none},
 		-- FocusedSymbol =			{fg = lvim.color_5},
-		-- MatchParen =			{fg = filter(one.palette, select_light)[1]},
+		MatchParen =			{fg = one.bright_fg},
 		-- NonText =	{fg = lvim.bg1},
 		-- Whitespace =			{fg = lvim.base2},
 		-- SpecialKey =			{fg = lvim.bg1},
-		-- Pmenu =		{fg = lvim.color_10, bg = lvim.base2},
-		-- PmenuSel =	{fg = lvim.base0, bg = lvim.color_10},
-		-- PmenuSelBold =			{fg = lvim.base0, bg = lvim.color_10},
-		-- PmenuSbar =	{fg = lvim.none, bg = lvim.base2},
-		-- PmenuThumb =			{fg = lvim.color_9, bg = lvim.color_4},
+		Pmenu =					{fg = one.default_fg, bg = one.brighter_bg},
+		PmenuSel =				{fg = one.bright_fg, bg = one.gray },
+		PmenuSelBold =			{fg = one.bright_fg},
+		PmenuSbar =				{fg = one.gray},
+		PmenuThumb =			{fg = one.bright_fg, bg = one.gray},
 		-- WildMenu =	{fg = lvim.color_10, bg = lvim.color_5},
 		-- Question =	{fg = lvim.color_3},
 		-- NormalFloat =			{fg = lvim.bg_visual, bg = lvim.base2},
-		-- Tabline =	{fg = lvim.color_10, bg = lvim.none},
-		-- TabLineFill =			{style = lvim.none},
-		-- TabLineSel =			{fg = lvim.bg1, bg = lvim.none},
-		-- StatusLine =			{fg = lvim.color_13, bg = lvim.base2, style = lvim.none},
-		-- StatusLineNC =			{fg = lvim.color_12, bg = lvim.base2, style = lvim.none},
-		-- SpellBad =	{fg = lvim.color_0, bg = lvim.none, style = "undercurl"},
-		-- SpellCap =	{fg = lvim.color_8, bg = lvim.none, style = "undercurl"},
-		-- SpellLocal =			{fg = lvim.color_7, bg = lvim.none, style = "undercurl"},
-		-- SpellRare =	{fg = lvim.color_9, bg = lvim.none, style = "undercurl"},
+		Tabline =				{fg = one.gray, bg = one.dark_bg},
+		TabLineFill =			{bg = one.dark_bg, style = one.none},
+		TabLineSel =			{fg = one.bright_fg, bg = one.default_bg, style = one.none},
+		StatusLine =			{fg = one.default_fg, bg = one.brighter_bg, style = one.none},
+		StatusLineNC =			{fg = one.default_bg, bg = one.brighter_bg, style = one.none},
+		SpellBad =				{fg = one.red, bg = one.none, style = one.underline},
+		SpellCap =				{fg = one.red, bg = one.none, style = one.underline},
+		SpellLocal =			{fg = one.red, bg = one.none, style = one.underline},
+		SpellRare =				{fg = one.blue, bg = one.none, style = one.underline},
 		-- Visual =	{fg = lvim.color_12, bg = lvim.black},
 		-- VisualNOS =	{fg = lvim.color_12, bg = lvim.black},
 		-- QuickFixLine =			{fg = lvim.color_9},
@@ -592,25 +579,3 @@ end
 one.colorscheme()
 
 return one
-
---[[
-print('-- SORTED BY LIGHTNESS --')
-table.sort(palette, sort_by_light_dec)
-for _, sub in ipairs(palette) do print(sub[2]) end
-
-print('-- SORTED BY SATURATION --')
-table.sort(palette, sort_by_sat_dec)
-for _, sub in ipairs(palette) do print(sub[2]) end
-
-print('-- SORTED BY REDNESS --')
-table.sort(palette, sort_by_red_dec)
-for _, sub in ipairs(palette) do print(sub[2]) end
-
-print('-- SORTED BY BLUE --')
-table.sort(palette, sort_by_blue_dec)
-for _, sub in ipairs(palette) do print(sub[2]) end
-
-print('-- SORTED BY HUE --')
-table.sort(palette, sort_by_hue)
-for _, sub in ipairs(palette) do print(sub[2]) end
-]]
