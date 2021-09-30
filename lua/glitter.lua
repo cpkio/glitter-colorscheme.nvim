@@ -222,9 +222,9 @@ function distanceHSL(tbl, index, value)
 	local h1, s1, l1 = colors.rgb_string_to_hsl(result[index][2])
 	::restart::
 	for i, item in ipairs(result) do
-	  local h2, s2, l2 = colors.rgb_string_to_hsl(result[i][2])
-	  local distance = math.sqrt((h2 - h1)^2 + (s2 - s1)^2 + (l2 - l1)^2)
-	  if (distance > value) then table.remove(result, i); goto restart end
+		local h2, s2, l2 = colors.rgb_string_to_hsl(result[i][2])
+		local distance = math.sqrt((h2 - h1)^2 + (s2 - s1)^2 + (l2 - l1)^2)
+		if (distance > value) then table.remove(result, i); goto restart end
 	end
 	return result
 end
@@ -237,9 +237,9 @@ function distanceHL(tbl, index, value)
 	local h1, _, l1 = colors.rgb_string_to_hsl(result[index][2])
 	::restart::
 	for i, item in ipairs(result) do
-	  local h2, _, l2 = colors.rgb_string_to_hsl(result[i][2])
-	  local distance = math.sqrt((h2 - h1)^2 + (l2 - l1)^2)
-	  if (distance > value) then table.remove(result, i); goto restart end
+		local h2, _, l2 = colors.rgb_string_to_hsl(result[i][2])
+		local distance = math.sqrt((h2 - h1)^2 + (l2 - l1)^2)
+		if (distance > value) then table.remove(result, i); goto restart end
 	end
 	return result
 end
@@ -252,9 +252,9 @@ function distanceHS(tbl, index, value)
 	local h1, s1, _ = colors.rgb_string_to_hsl(result[index][2])
 	::restart::
 	for i, item in ipairs(result) do
-	  local h2, s2, _ = colors.rgb_string_to_hsl(result[i][2])
-	  local distance = math.sqrt((h2 - h1)^2 + (s2 - s1)^2)
-	  if (distance > value) then table.remove(result, i); goto restart end
+		local h2, s2, _ = colors.rgb_string_to_hsl(result[i][2])
+		local distance = math.sqrt((h2 - h1)^2 + (s2 - s1)^2)
+		if (distance > value) then table.remove(result, i); goto restart end
 	end
 	return result
 end
@@ -267,9 +267,9 @@ function distanceSL(tbl, index, value)
 	local _, s1, l1 = colors.rgb_string_to_hsl(result[index][2])
 	::restart::
 	for i, item in ipairs(result) do
-	  local _, s2, l2 = colors.rgb_string_to_hsl(item[2])
-	  local distance = math.sqrt((s2 - s1)^2 + (l2 - l1)^2)
-	  if (distance > value) then table.remove(result, i); goto restart end
+		local _, s2, l2 = colors.rgb_string_to_hsl(item[2])
+		local distance = math.sqrt((s2 - s1)^2 + (l2 - l1)^2)
+		if (distance > value) then table.remove(result, i); goto restart end
 	end
 	return result
 end
@@ -306,14 +306,14 @@ function glitter.highlight(group, color)
 
 	local color_fg
 	if color.fg then
-	  	if #color.fg > 1 then color_fg = color.fg[math.random(1, #color.fg)] else color_fg = color.fg[1] end
+			if #color.fg > 1 then color_fg = color.fg[math.random(1, #color.fg)] else color_fg = color.fg[1] end
 	end
 	local fg = color.fg and "ctermfg=" .. color_fg[1] .. " guifg=" .. color_fg[2] or "ctermfg=NONE guifg=NONE"
 
 	local color_bg
 	if color.bg then
-	  	if #color.bg > 1 then color_bg = color.bg[math.random(1, #color.bg)] else color_bg = color.bg[1] end
-  	end
+			if #color.bg > 1 then color_bg = color.bg[math.random(1, #color.bg)] else color_bg = color.bg[1] end
+		end
 	local bg = color.bg and "ctermbg=" .. color_bg[1] .. " guibg=" .. color_bg[2] or "ctermbg=NONE guibg=NONE"
 
 	local sp = color.sp and "guisp=" .. color.sp or ""
@@ -372,9 +372,9 @@ function glitter.load_syntax()
 		-- CursorIM =	{fg = lvim.none,				bg = lvim.none,				style = "reverse"},
 		-- CursorColumn =			{fg = lvim.none,				bg = lvim.bg_highlight},
 		CursorLine =			{fg = glitter.bright_fg,					bg = glitter.bright_bg,				style=glitter.none},
-		LineNr =					{fg = glitter.default_fg},
+		LineNr =					{fg = glitter.gray},
 		-- qfLineNr =	{fg = lvim.color_10},
-		CursorLineNr =		{fg = glitter.bright_fg},
+		CursorLineNr =		{fg = glitter.gray, style = glitter.reverse},
 		DiffAdd =					{fg = glitter.green_bright,				bg = glitter.none},
 		DiffChange =			{fg = glitter.red,								bg = glitter.none},
 		DiffDelete =			{fg = glitter.red_bright,					bg = glitter.none},
@@ -396,14 +396,14 @@ function glitter.load_syntax()
 		-- Question =	{fg = lvim.color_3},
 		NormalFloat =			{fg = glitter.default_fg,				bg = glitter.bright_bg},
 		Tabline =					{fg = glitter.gray,							bg = glitter.dark},
-		TabLineFill =			{bg = glitter.dark,																						  	style = glitter.none},
+		TabLineFill =			{bg = glitter.dark,																								style = glitter.none},
 		TabLineSel =			{fg = glitter.bright_fg,					bg = glitter.default_bg,				style = glitter.none},
-		StatusLine =			{fg = glitter.default_fg,				bg = glitter.bright_bg,			    	style = glitter.none},
+		StatusLine =			{fg = glitter.default_fg,				bg = glitter.bright_bg,						style = glitter.none},
 		StatusLineNC =		{fg = glitter.gray,						bg = glitter.bright_bg,							style = glitter.none},
 		SpellBad =				{fg = glitter.red,								bg = glitter.none,							style = glitter.underline},
 		SpellCap =				{fg = glitter.red,								bg = glitter.none,							style = glitter.underline},
 		SpellLocal =			{fg = glitter.red,								bg = glitter.none,							style = glitter.underline},
-		SpellRare =				{fg = glitter.blue,							bg = glitter.none,				  			style = glitter.underline},
+		SpellRare =				{fg = glitter.blue,							bg = glitter.none,								style = glitter.underline},
 		Visual =					{fg = glitter.dark,							bg = glitter.blue},
 		-- VisualNOS =				{fg = glitter.dark,						bg = glitter.blue},
 		-- QuickFixLine =			{fg = lvim.color_9},
@@ -415,7 +415,7 @@ function glitter.load_syntax()
 		Conditional =			{ fg = glitter.pool,																								style = glitter.none },
 		Constant =				{ fg = glitter.pool,																								style = glitter.none },
 		Define =					{ fg = glitter.pool,																								style = glitter.none },
-		Delimiter =				{ fg = glitter.bright_fg,									  												style = glitter.none },
+		Delimiter =				{ fg = glitter.bright_fg,																						style = glitter.none },
 		Error =						{ fg = glitter.pool,																								style = glitter.none },
 		Exception =				{ fg = glitter.pool,																								style = glitter.none },
 		Float =						{ fg = glitter.pool,																								style = glitter.none },
@@ -439,7 +439,7 @@ function glitter.load_syntax()
 		String =					{ fg = glitter.pool,																								style = glitter.none },
 		Structure =				{ fg = glitter.pool,																								style = glitter.none },
 		Tag =							{ fg = glitter.pool,																								style = glitter.none },
-		Title =						{ fg = glitter.bright_fg,									  												style = glitter.none },
+		Title =						{ fg = glitter.bright_fg,																						style = glitter.none },
 		Todo =						{ fg = glitter.pool,																								style = glitter.none },
 		Type =						{ fg = glitter.pool,																								style = glitter.none },
 		Typedef =					{ fg = glitter.pool,																								style = glitter.none },
@@ -470,7 +470,7 @@ function glitter.load_plugin_syntax()
 		TSFloat =					{ fg = glitter.pool,																							style = glitter.none },
 		TSFuncBuiltin =		{ fg = glitter.pool,																							style = glitter.none },
 		TSFuncMacro =			{ fg = glitter.pool,																							style = glitter.none },
-		TSFunction =			{ fg = glitter.red, 																							style = glitter.none },
+		TSFunction =			{ fg = glitter.red,																								style = glitter.none },
 		TSInclude =				{ fg = glitter.pool,																							style = glitter.none },
 		TSKeyword =				{ fg = glitter.pool,																							style = glitter.italic },
 		TSKeywordFunction =		{ fg = glitter.pool,																					style = glitter.italic },
@@ -483,7 +483,7 @@ function glitter.load_plugin_syntax()
 		TSNamespace =			{ fg = glitter.pool,																							style = glitter.none },
 		-- TSNone
 		-- TSNote
-		TSNumber =				{ fg = glitter.blue,							    														style = glitter.none },
+		TSNumber =				{ fg = glitter.blue,																							style = glitter.none },
 		TSOperator =			{ fg = glitter.bright_fg,																					style = glitter.none },
 		TSParameter =			{ fg = glitter.pool,																							style = glitter.none },
 		TSParameterReference =		{ fg = glitter.pool,																			style = glitter.none },
@@ -496,7 +496,7 @@ function glitter.load_plugin_syntax()
 		TSRepeat =				{ fg = glitter.pool,																							style = glitter.none },
 		-- TSStrike
 		TSString =				{ fg = glitter.green,																							style = glitter.none },
-		TSStringEscape =	{ fg = glitter.red,												  											style = glitter.none },
+		TSStringEscape =	{ fg = glitter.red,																								style = glitter.none },
 		TSStringRegex =		{ fg = glitter.blue,																							style = glitter.none },
 		-- TSStringSpecial
 		TSStrong =				{ fg = glitter.green_bright,																			style = glitter.none },
@@ -506,7 +506,7 @@ function glitter.load_plugin_syntax()
 		-- TSTagAttribute
 		TSTagDelimiter =	{ fg = glitter.bright_fg,																					style = glitter.none },
 		TSText =					{ fg = glitter.default_fg,																				style = glitter.none },
-		TSTextReference =	{ fg = glitter.red,												  											style = glitter.none },
+		TSTextReference =	{ fg = glitter.red,																								style = glitter.none },
 		TSTitle =					{ fg = glitter.bright_fg,																					style = glitter.none },
 		TSType =					{ fg = glitter.pool,																							style = glitter.none },
 		TSTypeBuiltin =		{ fg = glitter.pool,																							style = glitter.none },
@@ -603,6 +603,19 @@ function glitter.load_plugin_syntax()
 	return plugin_syntax
 end
 
+function InsertStatusColor(mode)
+	if (mode == 'i') then
+		glitter.highlight('LineNr', {fg = glitter.insert})
+		glitter.highlight('CursorLineNr', {fg = glitter.insert, style = glitter.reverse})
+	elseif (mode == 'r') then
+		glitter.highlight('LineNr', {fg = glitter.replace})
+		glitter.highlight('CursorLineNr', {fg = glitter.replace, style = glitter.reverse})
+	else
+		glitter.highlight('LineNr', {fg = glitter.gray})
+		glitter.highlight('CursorLineNr', {fg = glitter.gray, style = glitter.reverse})
+	end
+end
+
 local async_load_plugin
 
 async_load_plugin = vim.loop.new_async(vim.schedule_wrap(function()
@@ -617,6 +630,8 @@ function glitter.colorscheme()
 	if vim.fn.exists("syntax_on") then vim.api.nvim_command("syntax reset") end
 	vim.g.colors_name = "glitter"
 	local syntax = glitter.load_syntax()
+	vim.api.nvim_command("autocmd InsertEnter,InsertChange * lua InsertStatusColor(vim.api.nvim_get_vvar('insertmode'))")
+	vim.api.nvim_command("autocmd InsertLeave * lua InsertStatusColor('n')")
 	for group, colors in pairs(syntax) do glitter.highlight(group, colors) end
 	async_load_plugin:send()
 end
