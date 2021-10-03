@@ -8,8 +8,7 @@ It is written with ConEmu for Windows terminal emulator, which I use in 16
 colors mode. So, I'd like to have a colorscheme, that selects appropriate
 colors from a specified palette and assigns them to highlight groups.
 
-I have borrowed a big part of colorscheme code from someone, but I forgot
-where, so I cannot credit him, sorry.
+I have borrowed a big part of colorscheme code from `lvim-tech <https://github.com/lvim-tech/lvim-colorscheme>`_.
 
 Additionally, it uses `colors.lua <http://sputnik.freewisdom.org/lib/colors>`_
 library for sorting colors.
@@ -22,3 +21,10 @@ may slightly change after restart, which is OK for me for now.
 
 As said, this is WIP, and for now is tested on OneDark color scheme for
 ConEmu.
+
+Usage
+*****
+
+.. TODO: Clone repo, set palette with ``require'glitter'.setup()``, then ``colorscheme glitter``.
+
+For now: ``colorscheme glitter``. Edit ``glitter.lua`` to set required palette

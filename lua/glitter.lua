@@ -4,6 +4,15 @@ local colors = require('colors')
 
 local glitter = {}
 
+local debug = true
+
+local logfile = nil
+
+if debug then
+  logfile = io.open('r:\\colorlog.txt', "a")
+  io.output(logfile)
+end
+
 glitter.palette = {
 	{0, '#282c34'},
 	{1, '#61afef'},
@@ -67,6 +76,7 @@ local spread = 0.1
 -------------------------------------------
 
 function dark(tbl, value)
+  if debug then io.write('filter by darkness') end
 	local result = clone(tbl)
 	value = value or lightness_threshold
 	::restart::
@@ -78,6 +88,7 @@ function dark(tbl, value)
 end
 
 function light(tbl, value)
+  if debug then io.write('filter by lightness') end
 	local result = clone(tbl)
 	value = value or lightness_threshold
 	::restart::
@@ -89,28 +100,31 @@ function light(tbl, value)
 end
 
 function dull(tbl, value)
+  if debug then io.write('filter by color dullness') end
 	local result = clone(tbl)
 	value = value or colorful_threshold
 	::restart::
 	for i, item in ipairs(result) do
 		local _, s, l = colors.rgb_string_to_hsl(item[2])
-		if not (s <= value + spread) or not (l >= 0.9)  then table.remove(result, i); goto restart end
+		if not (s <= value) or not (l >= 0.9)  then table.remove(result, i); goto restart end
 	end
 	return result
 end
 
 function colorful(tbl, value)
+  if debug then io.write('filter by colofullness') end
 	local result = clone(tbl)
 	value = value or colorful_threshold
 	::restart::
 	for i, item in ipairs(result) do
 		local _, s, l = colors.rgb_string_to_hsl(item[2])
-		if not (s >= value - spread) or (l >= 0.9) then table.remove(result, i); goto restart end
+		if not (s >= value) or (l >= 0.9) then table.remove(result, i); goto restart end
 	end
 	return result
 end
 
 function hue(tbl, angle)
+  if debug then io.write('filter by hue') end
 	local result = clone(tbl)
 	angle = angle or 180
 	::reiterate::
@@ -129,6 +143,7 @@ end
 
 -- Взятие верхних позиций таблицы
 function pop(tbl, amount)
+  if debug then io.write('take N top elements') end
 	local result = {}
 	amount = amount or 1
 	for i = 1, amount do table.insert(result, tbl[i]) end
@@ -140,6 +155,7 @@ end
 
 -- Взятие нижних позиций из таблицы
 function pop_back(tbl, amount)
+  if debug then io.write('take N bottom elements') end
 	local result = {}
 	amount = amount or 1
 	for i = #tbl - amount + 1, #tbl do table.insert(result, tbl[i]) end
@@ -156,7 +172,8 @@ function b(tbl, value)
 end
 
 function sort_by_hue(tbl)
-  result = clone(tbl)
+  if debug then io.write('sort by hue') end
+  local result = clone(tbl)
   table.sort(tbl, function(e1, e2)
 	h1, _, _ = colors.rgb_string_to_hsl(e1[2])
 	h2, _, _ = colors.rgb_string_to_hsl(e2[2])
@@ -166,7 +183,8 @@ function sort_by_hue(tbl)
 end
 
 function sort_by_saturation(tbl)
-  result = clone(tbl)
+  if debug then io.write('sort by saturation') end
+  local result = clone(tbl)
   table.sort(result, function(e1, e2)
 	_, s1, _ = colors.rgb_string_to_hsl(e1[2])
 	_, s2, _ = colors.rgb_string_to_hsl(e2[2])
@@ -176,6 +194,7 @@ function sort_by_saturation(tbl)
 end
 
 function sort_by_lightness(tbl)
+  if debug then io.write('sort by lightness') end
   result = clone(tbl)
   table.sort(result, function(e1, e2)
 	_, _, l1 = colors.rgb_string_to_hsl(e1[2])
@@ -186,6 +205,7 @@ function sort_by_lightness(tbl)
 end
 
 function sort_by_red(tbl)
+  if debug then io.write('sort by red') end
   result = clone(tbl)
   table.sort(result, function(e1, e2)
 	r1, _, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
@@ -196,6 +216,7 @@ function sort_by_red(tbl)
 end
 
 function sort_by_green(tbl)
+  if debug then io.write('sort by green') end
   result = clone(tbl)
   table.sort(result, function(e1, e2)
 	_, g1, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
@@ -206,6 +227,7 @@ function sort_by_green(tbl)
 end
 
 function sort_by_blue(tbl)
+  if debug then io.write('sort by blue') end
   result = clone(tbl)
   table.sort(result, function(e1, e2)
 	_, _, b1 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
@@ -217,6 +239,7 @@ end
 
 -- @index is a base color, from which the distance is calculated
 function distanceHSL(tbl, index, value)
+  if debug then io.write('get color in vicinity by Hue+Saturation+Lightness') end
 	if index > #tbl then index = #tbl end
 	local value = value or 1.2
 	local h1, s1, l1 = colors.rgb_string_to_hsl(result[index][2])
@@ -230,6 +253,7 @@ function distanceHSL(tbl, index, value)
 end
 
 function distanceHL(tbl, index, value)
+  if debug then io.write('get color in vicinity by Hue+Lightness') end
 	local result = clone(tbl)
 	local index = index or 1
 	if index > #tbl then index = #tbl end
@@ -245,6 +269,7 @@ function distanceHL(tbl, index, value)
 end
 
 function distanceHS(tbl, index, value)
+  if debug then io.write('get color in vicinity by Hue+Saturation') end
 	local result = clone(tbl)
 	local index = index or 1
 	if index > #tbl then index = #tbl end
@@ -260,6 +285,7 @@ function distanceHS(tbl, index, value)
 end
 
 function distanceSL(tbl, index, value)
+  if debug then io.write('get color in vicinity by Saturation+Lighness') end
 	local result = clone(tbl)
 	local index = index or 1
 	if index > #result then index = #result end
@@ -286,18 +312,16 @@ function print_colors(tbl, text)
 	return result
 end
 
-function filter(tbl, ...)
+function filter(filtername, tbl, ...)
+  if debug then io.write('\nNEW FILTER CHAIN: ', filtername, '\n') end
 	local result = clone(tbl)
-  local file = io.open('r:\\colorlog.txt', "a")
-  io.output(file)
 	for i, fn in ipairs({...}) do
 		local func = fn[1]
 		local param = fn[2]
 		local param2 = fn[3]
 		result = func(result, param, param2)
-    io.write(print_colors(result, string.format('\ncall #%d -------------\n', i)))
+    if debug then io.write(print_colors(result, string.format('\ncall #%d %s ------------\n', i, vim.inspect(fn)))) end
 	end
-  io.close(file)
 	return result
 end
 
@@ -328,28 +352,28 @@ glitter.underline = {{"underline", "undercurl"}}
 glitter.reverse = {{"reverse", "reverse"}}
 glitter.italic = {{"italic", "italic"}}
 
-glitter.default_fg = filter(glitter.palette, {light}, {sort_by_lightness}, {pop_back, 2}, {pop})
-glitter.default_bg = filter(glitter.palette, {dark}, {sort_by_lightness}, {pop, 2}, {pop_back})
+glitter.default_fg = filter('Default Foreground', glitter.palette, {light}, {sort_by_lightness}, {pop_back, 2}, {pop})
+glitter.default_bg = filter('Default Background', glitter.palette, {dark}, {sort_by_lightness}, {pop, 2}, {pop_back})
 
-glitter.dark = filter(glitter.palette, {dark}, {sort_by_lightness}, {pop})
+glitter.dark = filter('Darkest color', glitter.palette, {dark}, {sort_by_lightness}, {pop})
 
-glitter.bright_fg = filter(glitter.palette, {light}, {sort_by_lightness}, {pop_back})
-glitter.bright_bg = filter(glitter.palette, {dark}, {sort_by_lightness}, {pop, 3}, {pop_back})
+glitter.bright_fg = filter('Bright Foreground', glitter.palette, {light}, {sort_by_lightness}, {pop_back})
+glitter.bright_bg = filter('Bright Background', glitter.palette, {dark}, {sort_by_lightness}, {pop, 3}, {pop_back})
 
-glitter.red = filter(glitter.palette, {light}, {hue, 0}, { pop_back, 2 })
-glitter.red_bright = filter(glitter.palette, {light}, {hue, 0}, { pop_back, 1 })
-glitter.blue = filter(glitter.palette, {colorful}, {sort_by_blue}, {pop_back, 2})
-glitter.green = filter(glitter.palette, {dark, 0.7}, {sort_by_green}, {pop_back, 2})
-glitter.green_bright = filter(glitter.palette, {dark, 0.8}, {sort_by_lightness}, {hue, 40}, {pop_back, 2}, {pop})
+glitter.red = filter('Reddish Colors', glitter.palette, {light}, {hue, 0}, { pop_back, 2 })
+glitter.red_bright = filter('Bright Red', glitter.palette, {light}, {hue, 0}, { pop_back, 1 })
+glitter.blue = filter('Blueish Colors', glitter.palette, {colorful}, {sort_by_blue}, {pop_back, 2})
+glitter.green = filter('Greenish Colors', glitter.palette, {dark, 0.7}, {sort_by_green}, {pop_back, 2})
+glitter.green_bright = filter('Bright Green', glitter.palette, {dark, 0.8}, {sort_by_lightness}, {hue, 40}, {pop_back, 2}, {pop})
 
-glitter.insert = filter(glitter.blue, {sort_by_blue}, {pop_back, 2}, {pop})
-glitter.replace = filter(glitter.red, {sort_by_red}, {pop_back, 2}, {pop})
-glitter.visual = filter(glitter.green, {sort_by_green}, {pop_back, 2}, {pop})
+glitter.insert = filter('INSERT Mode Color', glitter.blue, {sort_by_blue}, {pop_back, 2}, {pop})
+glitter.replace = filter('REPLACE Mode Color', glitter.red, {sort_by_red}, {pop_back, 2}, {pop})
+glitter.visual = filter('VISUAL Mode Color', glitter.green, {sort_by_green}, {pop_back, 2}, {pop})
 
-glitter.gray = filter(glitter.palette, {sort_by_saturation}, {pop, 5}, {sort_by_lightness}, {pop_back, 2}, {pop})
-glitter.gray2 = filter(glitter.palette, {sort_by_saturation}, {pop, 5}, {sort_by_lightness}, {pop_back, 3}, {pop})
+glitter.gray = filter('Gray', glitter.palette, {sort_by_saturation}, {pop, 5}, {sort_by_lightness}, {pop_back, 2}, {pop})
+glitter.gray2 = filter('Gray2', glitter.palette, {sort_by_saturation}, {pop, 5}, {sort_by_lightness}, {pop_back, 3}, {pop})
 
-glitter.pool = filter(glitter.palette, {colorful, 0.4}, {light, 0.5}, {dark, 0.7})
+glitter.pool = filter('Random Colors Pool', glitter.palette, {colorful, 0.4}, {light, 0.5}, {dark, 0.7})
 
 function glitter.load_syntax()
 	local syntax = {
@@ -510,7 +534,7 @@ function glitter.load_plugin_syntax()
 		TSTitle =					{ fg = glitter.bright_fg,																					style = glitter.none },
 		TSType =					{ fg = glitter.pool,																							style = glitter.none },
 		TSTypeBuiltin =		{ fg = glitter.pool,																							style = glitter.none },
-		TSURI =						{ fg = glitter.pool,																							style = glitter.none },
+		TSURI =						{ fg = glitter.blue,																							style = glitter.none },
 		TSUnderline =			{ fg = glitter.none,																							style = glitter.underline },
 		TSVariable =			{ fg = glitter.blue,																							style = glitter.none },
 		TSVariableBuiltin =		{ fg = glitter.blue,																					style = glitter.none },
@@ -620,7 +644,7 @@ local async_load_plugin
 
 async_load_plugin = vim.loop.new_async(vim.schedule_wrap(function()
 	local syntax = glitter.load_plugin_syntax()
-	for group, colors in pairs(syntax) do glitter.highlight(group, colors) end
+	for group, color in pairs(syntax) do glitter.highlight(group, color) end
 	async_load_plugin:close()
 end))
 
@@ -632,9 +656,11 @@ function glitter.colorscheme()
 	local syntax = glitter.load_syntax()
 	vim.api.nvim_command("autocmd InsertEnter,InsertChange * lua InsertStatusColor(vim.api.nvim_get_vvar('insertmode'))")
 	vim.api.nvim_command("autocmd InsertLeave * lua InsertStatusColor('n')")
-	for group, colors in pairs(syntax) do glitter.highlight(group, colors) end
+	for group, color in pairs(syntax) do glitter.highlight(group, color) end
 	async_load_plugin:send()
 end
+
+if debug then io.close(logfile) end
 
 glitter.colorscheme()
 
