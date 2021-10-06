@@ -1,10 +1,12 @@
+-- vim:noexpandtab:tabstop=8:shiftwidth=8
+
 package.loaded["glitter"] = nil
 
 local colors = require('colors')
 
 local glitter = {}
 
-local debug = true
+local debug = false
 
 local logfile = nil
 
@@ -76,7 +78,7 @@ local spread = 0.1
 -------------------------------------------
 
 function dark(tbl, value)
-  if debug then io.write('filter by darkness') end
+	if debug then io.write('filter by darkness') end
 	local result = clone(tbl)
 	value = value or lightness_threshold
 	::restart::
@@ -88,7 +90,7 @@ function dark(tbl, value)
 end
 
 function light(tbl, value)
-  if debug then io.write('filter by lightness') end
+	if debug then io.write('filter by lightness') end
 	local result = clone(tbl)
 	value = value or lightness_threshold
 	::restart::
@@ -100,7 +102,7 @@ function light(tbl, value)
 end
 
 function dull(tbl, value)
-  if debug then io.write('filter by color dullness') end
+	if debug then io.write('filter by color dullness') end
 	local result = clone(tbl)
 	value = value or colorful_threshold
 	::restart::
@@ -112,7 +114,7 @@ function dull(tbl, value)
 end
 
 function colorful(tbl, value)
-  if debug then io.write('filter by colofullness') end
+	if debug then io.write('filter by colofullness') end
 	local result = clone(tbl)
 	value = value or colorful_threshold
 	::restart::
@@ -124,7 +126,7 @@ function colorful(tbl, value)
 end
 
 function hue(tbl, angle)
-  if debug then io.write('filter by hue') end
+	if debug then io.write('filter by hue') end
 	local result = clone(tbl)
 	angle = angle or 180
 	::reiterate::
@@ -143,7 +145,7 @@ end
 
 -- Взятие верхних позиций таблицы
 function pop(tbl, amount)
-  if debug then io.write('take N top elements') end
+	if debug then io.write('take N top elements') end
 	local result = {}
 	amount = amount or 1
 	for i = 1, amount do table.insert(result, tbl[i]) end
@@ -155,7 +157,7 @@ end
 
 -- Взятие нижних позиций из таблицы
 function pop_back(tbl, amount)
-  if debug then io.write('take N bottom elements') end
+	if debug then io.write('take N bottom elements') end
 	local result = {}
 	amount = amount or 1
 	for i = #tbl - amount + 1, #tbl do table.insert(result, tbl[i]) end
@@ -172,74 +174,74 @@ function b(tbl, value)
 end
 
 function sort_by_hue(tbl)
-  if debug then io.write('sort by hue') end
-  local result = clone(tbl)
-  table.sort(tbl, function(e1, e2)
-	h1, _, _ = colors.rgb_string_to_hsl(e1[2])
-	h2, _, _ = colors.rgb_string_to_hsl(e2[2])
-	return h1 < h2
-  end)
-  return result
+	if debug then io.write('sort by hue') end
+	local result = clone(tbl)
+	table.sort(tbl, function(e1, e2)
+		h1, _, _ = colors.rgb_string_to_hsl(e1[2])
+		h2, _, _ = colors.rgb_string_to_hsl(e2[2])
+		return h1 < h2
+	end)
+	return result
 end
 
 function sort_by_saturation(tbl)
-  if debug then io.write('sort by saturation') end
-  local result = clone(tbl)
-  table.sort(result, function(e1, e2)
-	_, s1, _ = colors.rgb_string_to_hsl(e1[2])
-	_, s2, _ = colors.rgb_string_to_hsl(e2[2])
-	return s1 < s2
-  end)
-  return result
+	if debug then io.write('sort by saturation') end
+	local result = clone(tbl)
+	table.sort(result, function(e1, e2)
+		_, s1, _ = colors.rgb_string_to_hsl(e1[2])
+		_, s2, _ = colors.rgb_string_to_hsl(e2[2])
+		return s1 < s2
+	end)
+	return result
 end
 
 function sort_by_lightness(tbl)
-  if debug then io.write('sort by lightness') end
-  result = clone(tbl)
-  table.sort(result, function(e1, e2)
-	_, _, l1 = colors.rgb_string_to_hsl(e1[2])
-	_, _, l2 = colors.rgb_string_to_hsl(e2[2])
-	return l1 < l2
-  end)
-  return result
+	if debug then io.write('sort by lightness') end
+	result = clone(tbl)
+	table.sort(result, function(e1, e2)
+		_, _, l1 = colors.rgb_string_to_hsl(e1[2])
+		_, _, l2 = colors.rgb_string_to_hsl(e2[2])
+		return l1 < l2
+	end)
+	return result
 end
 
 function sort_by_red(tbl)
-  if debug then io.write('sort by red') end
-  result = clone(tbl)
-  table.sort(result, function(e1, e2)
-	r1, _, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
-	r2, _, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
-	return r1 < r2
-  end)
-  return result
+	if debug then io.write('sort by red') end
+	result = clone(tbl)
+	table.sort(result, function(e1, e2)
+		r1, _, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
+		r2, _, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
+		return r1 < r2
+	end)
+	return result
 end
 
 function sort_by_green(tbl)
-  if debug then io.write('sort by green') end
-  result = clone(tbl)
-  table.sort(result, function(e1, e2)
-	_, g1, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
-	_, g2, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
-	return g1 < g2
-  end)
-  return result
+	if debug then io.write('sort by green') end
+	result = clone(tbl)
+	table.sort(result, function(e1, e2)
+		_, g1, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
+		_, g2, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
+		return g1 < g2
+	end)
+	return result
 end
 
 function sort_by_blue(tbl)
-  if debug then io.write('sort by blue') end
-  result = clone(tbl)
-  table.sort(result, function(e1, e2)
-	_, _, b1 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
-	_, _, b2 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
-	return b1 < b2
-  end)
-  return result
+	if debug then io.write('sort by blue') end
+	result = clone(tbl)
+	table.sort(result, function(e1, e2)
+		_, _, b1 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
+		_, _, b2 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
+		return b1 < b2
+	end)
+	return result
 end
 
 -- @index is a base color, from which the distance is calculated
 function distanceHSL(tbl, index, value)
-  if debug then io.write('get color in vicinity by Hue+Saturation+Lightness') end
+	if debug then io.write('get color in vicinity by Hue+Saturation+Lightness') end
 	if index > #tbl then index = #tbl end
 	local value = value or 1.2
 	local h1, s1, l1 = colors.rgb_string_to_hsl(result[index][2])
@@ -253,7 +255,7 @@ function distanceHSL(tbl, index, value)
 end
 
 function distanceHL(tbl, index, value)
-  if debug then io.write('get color in vicinity by Hue+Lightness') end
+	if debug then io.write('get color in vicinity by Hue+Lightness') end
 	local result = clone(tbl)
 	local index = index or 1
 	if index > #tbl then index = #tbl end
@@ -269,7 +271,7 @@ function distanceHL(tbl, index, value)
 end
 
 function distanceHS(tbl, index, value)
-  if debug then io.write('get color in vicinity by Hue+Saturation') end
+	if debug then io.write('get color in vicinity by Hue+Saturation') end
 	local result = clone(tbl)
 	local index = index or 1
 	if index > #tbl then index = #tbl end
@@ -285,7 +287,7 @@ function distanceHS(tbl, index, value)
 end
 
 function distanceSL(tbl, index, value)
-  if debug then io.write('get color in vicinity by Saturation+Lighness') end
+	if debug then io.write('get color in vicinity by Saturation+Lighness') end
 	local result = clone(tbl)
 	local index = index or 1
 	if index > #result then index = #result end
@@ -313,14 +315,14 @@ function print_colors(tbl, text)
 end
 
 function filter(filtername, tbl, ...)
-  if debug then io.write('\nNEW FILTER CHAIN: ', filtername, '\n') end
+	if debug then io.write('\nNEW FILTER CHAIN: ', filtername, '\n') end
 	local result = clone(tbl)
 	for i, fn in ipairs({...}) do
 		local func = fn[1]
 		local param = fn[2]
 		local param2 = fn[3]
 		result = func(result, param, param2)
-    if debug then io.write(print_colors(result, string.format('\ncall #%d %s ------------\n', i, vim.inspect(fn)))) end
+	if debug then io.write(print_colors(result, string.format('\ncall #%d %s ------------\n', i, vim.inspect(fn)))) end
 	end
 	return result
 end
@@ -377,182 +379,182 @@ glitter.pool = filter('Random Colors Pool', glitter.palette, {colorful, 0.4}, {l
 
 function glitter.load_syntax()
 	local syntax = {
-		Normal =					{fg = glitter.default_fg,				bg = glitter.default_bg},
-		Terminal =				{fg = glitter.default_fg,				bg = glitter.none},
+		Normal =			{fg = glitter.default_fg,				bg = glitter.default_bg},
+		Terminal =			{fg = glitter.default_fg,				bg = glitter.none},
 		SignColumn =			{fg = glitter.default_fg,				bg = glitter.none},
 		FoldColumn =			{fg = glitter.default_fg,				bg = glitter.none},
-		VertSplit =				{fg = glitter.dark,						bg = glitter.none},
+		VertSplit =			{fg = glitter.dark,					bg = glitter.none},
 		FloatBorder =			{fg = glitter.default_fg,				bg = glitter.bright_bg},
-		Folded =					{fg = glitter.bright_fg,					bg = glitter.none},
+		Folded =			{fg = glitter.bright_fg,				bg = glitter.none},
 		EndOfBuffer =			{fg = glitter.default_bg,				bg = glitter.none},
-		Search =					{fg = glitter.dark,						bg = glitter.green},
-		IncSearch =				{fg = glitter.dark,						bg = glitter.green},
-		-- ColorColumn =			{fg = lvim.none,				bg = lvim.bg_highlight},
-		-- Conceal =	{fg = lvim.color_12,				bg = lvim.none},
-		-- Cursor =	{fg = lvim.none,				bg = lvim.none,				style = "reverse"},
-		-- vCursor =	{fg = lvim.none,				bg = lvim.none,				style = "reverse"},
-		-- iCursor =	{fg = lvim.none,				bg = lvim.none,				style = "reverse"},
-		-- lCursor =	{fg = lvim.none,				bg = lvim.none,				style = "reverse"},
-		-- CursorIM =	{fg = lvim.none,				bg = lvim.none,				style = "reverse"},
-		-- CursorColumn =			{fg = lvim.none,				bg = lvim.bg_highlight},
-		CursorLine =			{fg = glitter.bright_fg,					bg = glitter.bright_bg,				style=glitter.none},
-		LineNr =					{fg = glitter.gray},
-		-- qfLineNr =	{fg = lvim.color_10},
-		CursorLineNr =		{fg = glitter.gray, style = glitter.reverse},
-		DiffAdd =					{fg = glitter.green_bright,				bg = glitter.none},
-		DiffChange =			{fg = glitter.red,								bg = glitter.none},
-		DiffDelete =			{fg = glitter.red_bright,					bg = glitter.none},
-		DiffText =				{fg = glitter.blue,								bg = glitter.none},
-		-- Directory =	{fg = glitter.color_8,				bg = glitter.none},
-		ErrorMsg =				{fg = glitter.dark,								bg = glitter.red},
-		WarningMsg =			{fg = glitter.red,								bg = glitter.none},
-		-- ModeMsg =	{fg = lvim.color_6,				bg = lvim.none},
+		Search =			{fg = glitter.dark,					bg = glitter.default_fg},
+		IncSearch =			{fg = glitter.dark,					bg = glitter.green},
+		-- ColorColumn 			{fg = lvim.none,					bg = lvim.bg_highlight},
+		-- Conceal =			{fg = lvim.color_12,					bg = lvim.none},
+		-- Cursor =			{fg = lvim.none,					bg = lvim.none,					style = "reverse"},
+		-- vCursor =			{fg = lvim.none,					bg = lvim.none,					style = "reverse"},
+		-- iCursor =			{fg = lvim.none,					bg = lvim.none,					style = "reverse"},
+		-- lCursor =			{fg = lvim.none,					bg = lvim.none,					style = "reverse"},
+		-- CursorIM =			{fg = lvim.none,					bg = lvim.none,					style = "reverse"},
+		-- CursorColumn =		{fg = lvim.none,					bg = lvim.bg_highlight},
+		CursorLine =			{fg = glitter.bright_fg,				bg = glitter.bright_bg,				style = glitter.none},
+		LineNr =			{fg = glitter.gray},
+		-- qfLineNr =			{fg = lvim.color_10},
+		CursorLineNr =			{fg = glitter.gray,											style = glitter.reverse},
+		DiffAdd =			{fg = glitter.green_bright,				bg = glitter.none},
+		DiffChange =			{fg = glitter.red,					bg = glitter.none},
+		DiffDelete =			{fg = glitter.red_bright,				bg = glitter.none},
+		DiffText =			{fg = glitter.blue,					bg = glitter.none},
+		-- Directory =			{fg = glitter.color_8,					bg = glitter.none},
+		ErrorMsg =			{fg = glitter.dark,					bg = glitter.red},
+		WarningMsg =			{fg = glitter.red,					bg = glitter.none},
+		-- ModeMsg =			{fg = lvim.color_6,					bg = lvim.none},
 		MatchParen =			{fg = glitter.bright_fg},
-		NonText =					{fg = glitter.gray}, -- отвечает за символы конца строки
+		NonText =			{fg = glitter.gray}, -- отвечает за символы конца строки
 		Whitespace =			{fg = glitter.gray}, -- отвечает за показ непечатаемых символов (пробелов и прочих)
 		SpecialKey =			{fg = glitter.red},
-		Pmenu =						{fg = glitter.default_fg,				bg = glitter.bright_bg},
-		PmenuSel =				{fg = glitter.bright_fg,					bg = glitter.gray},
-		PmenuSelBold =		{fg = glitter.bright_fg},
-		PmenuSbar =				{fg = glitter.gray},
-		PmenuThumb =			{fg = glitter.bright_fg,					bg = glitter.gray},
-		-- WildMenu =	{fg = lvim.color_10,				bg = lvim.color_5},
-		-- Question =	{fg = lvim.color_3},
+		Pmenu =				{fg = glitter.default_fg,				bg = glitter.bright_bg},
+		PmenuSel =			{fg = glitter.bright_fg,				bg = glitter.gray},
+		PmenuSelBold =			{fg = glitter.bright_fg},
+		PmenuSbar =			{fg = glitter.gray},
+		PmenuThumb =			{fg = glitter.bright_fg,				bg = glitter.gray},
+		-- WildMenu =			{fg = lvim.color_10,					bg = lvim.color_5},
+		-- Question =			{fg = lvim.color_3},
 		NormalFloat =			{fg = glitter.default_fg,				bg = glitter.bright_bg},
-		Tabline =					{fg = glitter.gray,							bg = glitter.dark},
-		TabLineFill =			{bg = glitter.dark,																								style = glitter.none},
-		TabLineSel =			{fg = glitter.bright_fg,					bg = glitter.default_bg,				style = glitter.none},
-		StatusLine =			{fg = glitter.default_fg,				bg = glitter.bright_bg,						style = glitter.none},
-		StatusLineNC =		{fg = glitter.gray,						bg = glitter.bright_bg,							style = glitter.none},
-		SpellBad =				{fg = glitter.red,								bg = glitter.none,							style = glitter.underline},
-		SpellCap =				{fg = glitter.red,								bg = glitter.none,							style = glitter.underline},
-		SpellLocal =			{fg = glitter.red,								bg = glitter.none,							style = glitter.underline},
-		SpellRare =				{fg = glitter.blue,							bg = glitter.none,								style = glitter.underline},
-		Visual =					{fg = glitter.dark,							bg = glitter.blue},
-		-- VisualNOS =				{fg = glitter.dark,						bg = glitter.blue},
-		-- QuickFixLine =			{fg = lvim.color_9},
-		-- Debug =		{fg = lvim.color_2},
-		-- debugBreakpoint =		{fg = lvim.bg,				bg = lvim.color_0},
-		Boolean =					{ fg = glitter.pool,																								style = glitter.none },
-		Character =				{ fg = glitter.pool,																								style = glitter.none },
-		Comment =					{ fg = glitter.gray,																								style = glitter.none },
-		Conditional =			{ fg = glitter.pool,																								style = glitter.none },
-		Constant =				{ fg = glitter.pool,																								style = glitter.none },
-		Define =					{ fg = glitter.pool,																								style = glitter.none },
-		Delimiter =				{ fg = glitter.bright_fg,																						style = glitter.none },
-		Error =						{ fg = glitter.pool,																								style = glitter.none },
-		Exception =				{ fg = glitter.pool,																								style = glitter.none },
-		Float =						{ fg = glitter.pool,																								style = glitter.none },
-		Function =				{ fg = glitter.pool,																								style = glitter.none },
-		Identifier =			{ fg = glitter.pool,																								style = glitter.none },
-		Ignore =					{ fg = glitter.pool,																								style = glitter.none },
-		Include =					{ fg = glitter.pool,																								style = glitter.none },
-		Keyword =					{ fg = glitter.pool,																								style = glitter.italic },
-		Label =						{ fg = glitter.pool,																								style = glitter.none },
-		Macro =						{ fg = glitter.pool,																								style = glitter.none },
-		Number =					{ fg = glitter.pool,																								style = glitter.none },
-		Operator =				{ fg = glitter.pool,																								style = glitter.none },
-		PreCondit =				{ fg = glitter.pool,																								style = glitter.none },
-		PreProc =					{ fg = glitter.pool,																								style = glitter.none },
-		Repeat =					{ fg = glitter.pool,																								style = glitter.none },
-		Special =					{ fg = glitter.pool,																								style = glitter.none },
-		SpecialChar =			{ fg = glitter.pool,																								style = glitter.none },
-		SpecialComment =	{ fg = glitter.pool,																								style = glitter.none },
-		Statement =				{ fg = glitter.pool,																								style = glitter.none },
-		StorageClass =		{ fg = glitter.pool,																								style = glitter.none },
-		String =					{ fg = glitter.pool,																								style = glitter.none },
-		Structure =				{ fg = glitter.pool,																								style = glitter.none },
-		Tag =							{ fg = glitter.pool,																								style = glitter.none },
-		Title =						{ fg = glitter.bright_fg,																						style = glitter.none },
-		Todo =						{ fg = glitter.pool,																								style = glitter.none },
-		Type =						{ fg = glitter.pool,																								style = glitter.none },
-		Typedef =					{ fg = glitter.pool,																								style = glitter.none },
-		Underlined =			{ fg = glitter.none,																								style = glitter.underline},
+		Tabline =			{fg = glitter.gray,					bg = glitter.dark},
+		TabLineFill =			{bg = glitter.dark,											style = glitter.none},
+		TabLineSel =			{fg = glitter.bright_fg,				bg = glitter.default_bg,			style = glitter.none},
+		StatusLine =			{fg = glitter.default_fg,				bg = glitter.bright_bg,				style = glitter.none},
+		StatusLineNC =			{fg = glitter.gray,					bg = glitter.bright_bg,				style = glitter.none},
+		SpellBad =			{fg = glitter.red,					bg = glitter.none,				style = glitter.underline},
+		SpellCap =			{fg = glitter.red,					bg = glitter.none,				style = glitter.underline},
+		SpellLocal =			{fg = glitter.red,					bg = glitter.none,				style = glitter.underline},
+		SpellRare =			{fg = glitter.blue,					bg = glitter.none,				style = glitter.underline},
+		Visual =			{fg = glitter.dark,					bg = glitter.blue},
+		-- VisualNOS =			{fg = glitter.dark,					bg = glitter.blue},
+		-- QuickFixLine =		{fg = lvim.color_9},
+		-- Debug =			{fg = lvim.color_2},
+		-- debugBreakpoint =		{fg = lvim.bg,						bg = lvim.color_0},
+		Boolean =			{ fg = glitter.pool,											style = glitter.none },
+		Character =			{ fg = glitter.pool,											style = glitter.none },
+		Comment =			{ fg = glitter.gray,											style = glitter.none },
+		Conditional =			{ fg = glitter.pool,											style = glitter.none },
+		Constant =			{ fg = glitter.pool,											style = glitter.none },
+		Define =			{ fg = glitter.pool,											style = glitter.none },
+		Delimiter =			{ fg = glitter.bright_fg,										style = glitter.none },
+		Error =				{ fg = glitter.pool,											style = glitter.none },
+		Exception =			{ fg = glitter.pool,											style = glitter.none },
+		Float =				{ fg = glitter.pool,											style = glitter.none },
+		Function =			{ fg = glitter.pool,											style = glitter.none },
+		Identifier =			{ fg = glitter.pool,											style = glitter.none },
+		Ignore =			{ fg = glitter.pool,											style = glitter.none },
+		Include =			{ fg = glitter.pool,											style = glitter.none },
+		Keyword =			{ fg = glitter.pool,											style = glitter.italic },
+		Label =				{ fg = glitter.pool,											style = glitter.none },
+		Macro =				{ fg = glitter.pool,											style = glitter.none },
+		Number =			{ fg = glitter.pool,											style = glitter.none },
+		Operator =			{ fg = glitter.pool,											style = glitter.none },
+		PreCondit =			{ fg = glitter.pool,											style = glitter.none },
+		PreProc =			{ fg = glitter.pool,											style = glitter.none },
+		Repeat =			{ fg = glitter.pool,											style = glitter.none },
+		Special =			{ fg = glitter.pool,											style = glitter.none },
+		SpecialChar =			{ fg = glitter.pool,											style = glitter.none },
+		SpecialComment =		{ fg = glitter.pool,											style = glitter.none },
+		Statement =			{ fg = glitter.pool,											style = glitter.none },
+		StorageClass =			{ fg = glitter.pool,											style = glitter.none },
+		String =			{ fg = glitter.pool,											style = glitter.none },
+		Structure =			{ fg = glitter.pool,											style = glitter.none },
+		Tag =				{ fg = glitter.pool,											style = glitter.none },
+		Title =				{ fg = glitter.bright_fg,										style = glitter.none },
+		Todo =				{ fg = glitter.pool,											style = glitter.none },
+		Type =				{ fg = glitter.pool,											style = glitter.none },
+		Typedef =			{ fg = glitter.pool,											style = glitter.none },
+		Underlined =			{ fg = glitter.none,											style = glitter.underline},
 	}
 	return syntax
 end
 
 function glitter.load_plugin_syntax()
 	local plugin_syntax = {
-		TSAnnotation =		{ fg = glitter.pool,																							style = glitter.none },
-		TSAttribute =			{ fg = glitter.pool,																							style = glitter.none },
-		TSBoolean =				{ fg = glitter.pool,																							style = glitter.none },
-		TSCharacter =			{ fg = glitter.pool,																							style = glitter.none },
+		TSAnnotation =			{ fg = glitter.pool,											style = glitter.none },
+		TSAttribute =			{ fg = glitter.pool,											style = glitter.none },
+		TSBoolean =			{ fg = glitter.pool,											style = glitter.none },
+		TSCharacter =			{ fg = glitter.pool,											style = glitter.none },
 		-- TSComment
-		TSConditional =		{ fg = glitter.pool,																							style = glitter.none },
-		TSConstant =			{ fg = glitter.pool,																							style = glitter.none },
+		TSConditional =			{ fg = glitter.pool,											style = glitter.none },
+		TSConstant =			{ fg = glitter.pool,											style = glitter.none },
 		-- TSConstBuiltin xxx links to Special
 		-- TSConstMacro   xxx links to Define
-		TSConstructor =		{ fg = glitter.pool,																							style = glitter.none },
+		TSConstructor =			{ fg = glitter.pool,											style = glitter.none },
 		-- TSDanger
-		TSEmphasis =			{ fg = glitter.green,																							style = glitter.none },
+		TSEmphasis =			{ fg = glitter.green,											style = glitter.none },
 		-- TSEnvironment
 		-- TSEnvironmentName
-		TSError =					{ fg = glitter.pool,																							style = glitter.none },
-		TSException =			{ fg = glitter.pool,																							style = glitter.none },
-		TSField =					{ fg = glitter.pool,																							style = glitter.none },
-		TSFloat =					{ fg = glitter.pool,																							style = glitter.none },
-		TSFuncBuiltin =		{ fg = glitter.pool,																							style = glitter.none },
-		TSFuncMacro =			{ fg = glitter.pool,																							style = glitter.none },
-		TSFunction =			{ fg = glitter.red,																								style = glitter.none },
-		TSInclude =				{ fg = glitter.pool,																							style = glitter.none },
-		TSKeyword =				{ fg = glitter.pool,																							style = glitter.italic },
-		TSKeywordFunction =		{ fg = glitter.pool,																					style = glitter.italic },
+		TSError =			{ fg = glitter.pool,											style = glitter.none },
+		TSException =			{ fg = glitter.pool,											style = glitter.none },
+		TSField =			{ fg = glitter.pool,											style = glitter.none },
+		TSFloat =			{ fg = glitter.pool,											style = glitter.none },
+		TSFuncBuiltin =			{ fg = glitter.pool,											style = glitter.none },
+		TSFuncMacro =			{ fg = glitter.pool,											style = glitter.none },
+		TSFunction =			{ fg = glitter.red,											style = glitter.none },
+		TSInclude =			{ fg = glitter.pool,											style = glitter.none },
+		TSKeyword =			{ fg = glitter.pool,											style = glitter.italic },
+		TSKeywordFunction =		{ fg = glitter.pool,											style = glitter.italic },
 		-- TSKeywordOperator
 		-- TSKeywordReturn
-		TSLabel =					{ fg = glitter.pool,																							style = glitter.none },
-		TSLiteral =				{ fg = glitter.green,																							style = glitter.none },
+		TSLabel =			{ fg = glitter.pool,											style = glitter.none },
+		TSLiteral =			{ fg = glitter.green,											style = glitter.none },
 		-- TSMath
-		TSMethod =				{ fg = glitter.pool,																							style = glitter.none },
-		TSNamespace =			{ fg = glitter.pool,																							style = glitter.none },
+		TSMethod =			{ fg = glitter.pool,											style = glitter.none },
+		TSNamespace =			{ fg = glitter.pool,											style = glitter.none },
 		-- TSNone
 		-- TSNote
-		TSNumber =				{ fg = glitter.blue,																							style = glitter.none },
-		TSOperator =			{ fg = glitter.bright_fg,																					style = glitter.none },
-		TSParameter =			{ fg = glitter.pool,																							style = glitter.none },
-		TSParameterReference =		{ fg = glitter.pool,																			style = glitter.none },
-		TSProperty =			{ fg = glitter.pool,																							style = glitter.none },
-		TSPunctBracket =	{ fg = glitter.pool,																							style = glitter.none },
-		TSPunctDelimiter =	{ fg = glitter.pool,																						style = glitter.none },
-		-- TSPunctSpecial оформляет в том числе строку символов заголовка в RST,
+		TSNumber =			{ fg = glitter.blue,											style = glitter.none },
+		TSOperator =			{ fg = glitter.bright_fg,										style = glitter.none },
+		TSParameter =			{ fg = glitter.pool,											style = glitter.none },
+		TSParameterReference =		{ fg = glitter.pool,											style = glitter.none },
+		TSProperty =			{ fg = glitter.pool,											style = glitter.none },
+		TSPunctBracket =		{ fg = glitter.pool,											style = glitter.none },
+		TSPunctDelimiter =		{ fg = glitter.pool,											style = glitter.none },
+		-- TSPunctSpecial оформляет в том числе строку символов заголовка в RST
 		-- поэтому делаем его идентичным TSTitle
-		TSPunctSpecial =		{ fg = glitter.bright_fg,																				style = glitter.none },
-		TSRepeat =				{ fg = glitter.pool,																							style = glitter.none },
+		TSPunctSpecial =		{ fg = glitter.bright_fg,										style = glitter.none },
+		TSRepeat =			{ fg = glitter.pool,											style = glitter.none },
 		-- TSStrike
-		TSString =				{ fg = glitter.green,																							style = glitter.none },
-		TSStringEscape =	{ fg = glitter.red,																								style = glitter.none },
-		TSStringRegex =		{ fg = glitter.blue,																							style = glitter.none },
+		TSString =			{ fg = glitter.green,											style = glitter.none },
+		TSStringEscape =		{ fg = glitter.red,											style = glitter.none },
+		TSStringRegex =			{ fg = glitter.blue,											style = glitter.none },
 		-- TSStringSpecial
-		TSStrong =				{ fg = glitter.green_bright,																			style = glitter.none },
-		TSStructure =			{ fg = glitter.pool,																							style = glitter.none },
+		TSStrong =			{ fg = glitter.green_bright,										style = glitter.none },
+		TSStructure =			{ fg = glitter.pool,											style = glitter.none },
 		-- TSSymbol
-		TSTag =						{ fg = glitter.pool,																							style = glitter.none },
+		TSTag =				{ fg = glitter.pool,											style = glitter.none },
 		-- TSTagAttribute
-		TSTagDelimiter =	{ fg = glitter.bright_fg,																					style = glitter.none },
-		TSText =					{ fg = glitter.default_fg,																				style = glitter.none },
-		TSTextReference =	{ fg = glitter.red,																								style = glitter.none },
-		TSTitle =					{ fg = glitter.bright_fg,																					style = glitter.none },
-		TSType =					{ fg = glitter.pool,																							style = glitter.none },
-		TSTypeBuiltin =		{ fg = glitter.pool,																							style = glitter.none },
-		TSURI =						{ fg = glitter.blue,																							style = glitter.none },
-		TSUnderline =			{ fg = glitter.none,																							style = glitter.underline },
-		TSVariable =			{ fg = glitter.blue,																							style = glitter.none },
-		TSVariableBuiltin =		{ fg = glitter.blue,																					style = glitter.none },
+		TSTagDelimiter =		{ fg = glitter.bright_fg,										style = glitter.none },
+		TSText =			{ fg = glitter.default_fg,										style = glitter.none },
+		TSTextReference =		{ fg = glitter.red,											style = glitter.none },
+		TSTitle =			{ fg = glitter.bright_fg,										style = glitter.none },
+		TSType =			{ fg = glitter.pool,											style = glitter.none },
+		TSTypeBuiltin =			{ fg = glitter.pool,											style = glitter.none },
+		TSURI =				{ fg = glitter.blue,											style = glitter.none },
+		TSUnderline =			{ fg = glitter.none,											style = glitter.underline },
+		TSVariable =			{ fg = glitter.blue,											style = glitter.none },
+		TSVariableBuiltin =		{ fg = glitter.blue,												style = glitter.none },
 		-- TSWarning
-		statusOuter = { fg = glitter.dark, bg = glitter.gray },
-		statusMiddle = { fg = glitter.green, bg = glitter.bright_bg },
-		statusInner = { fg = glitter.default_fg, bg = glitter.none },
-		statusInsert = { fg = glitter.dark, bg = glitter.insert},
-		statusReplace = { fg = glitter.dark, bg = glitter.replace},
-		statusVisual = { fg = glitter.dark, bg = glitter.visual},
-		statusInactive = { fg = glitter.gray, bg = glitter.none },
-		statusCommand = { fg = glitter.dark, bg = glitter.bright_fg },
-		statusChanged = { fg = glitter.bright_fg, bg = glitter.red_bright },
+		statusOuter =			{ fg = glitter.dark,					bg = glitter.gray },
+		statusMiddle =			{ fg = glitter.green,					bg = glitter.bright_bg },
+		statusInner =			{ fg = glitter.default_fg,				bg = glitter.none },
+		statusInsert =			{ fg = glitter.dark,					bg = glitter.insert},
+		statusReplace =			{ fg = glitter.dark,					bg = glitter.replace},
+		statusVisual =			{ fg = glitter.dark,					bg = glitter.visual},
+		statusInactive =		{ fg = glitter.gray,					bg = glitter.none },
+		statusCommand =			{ fg = glitter.dark,					bg = glitter.bright_fg },
+		statusChanged =			{ fg = glitter.bright_fg,				bg = glitter.red_bright },
 
-		IndentBlanklineChar = { fg = glitter.gray2, style = {{"nocombine", "nocombine"}}},
-		IndentBlanklineContextChar = { style = {{"nocombine", "nocombine"}} },
-		IndentBlanklineSpaceChar = { style = {{"nocombine", "nocombine"}} },
-		IndentBlanklineSpaceCharBlankline = { style = {{"nocombine", "nocombine"}} },
+		IndentBlanklineChar =		{ fg = glitter.gray2,											style = {{"nocombine", "nocombine"}}},
+		IndentBlanklineContextChar =	{													style = {{"nocombine", "nocombine"}} },
+		IndentBlanklineSpaceChar =	{													style = {{"nocombine", "nocombine"}} },
+		IndentBlanklineSpaceCharBlankline = {													style = {{"nocombine", "nocombine"}} },
 
 		-- GitGutterAdd = {fg = lvim.color_add},
 		-- GitGutterChange = {fg = lvim.color_change},
