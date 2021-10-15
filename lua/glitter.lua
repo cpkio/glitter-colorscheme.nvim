@@ -556,6 +556,101 @@ function glitter.load_plugin_syntax()
 		IndentBlanklineSpaceChar =	{													style = {{"nocombine", "nocombine"}} },
 		IndentBlanklineSpaceCharBlankline = {													style = {{"nocombine", "nocombine"}} },
 
+		-- asciidocAdmonition
+		-- asciidocAnchorMacro
+		-- asciidocAttributeEntry
+		-- asciidocAttributeList
+		-- asciidocAttributeMacro
+		-- asciidocAttributeRef
+		-- asciidocBackslash
+		-- asciidocBlockTitle
+		-- asciidocCallout
+		-- asciidocCommentBlock
+		-- asciidocCommentLine
+		-- asciidocDoubleDollarPassthrough
+		-- asciidocEmail
+		-- asciidocEntityRef
+		-- asciidocExampleBlockDelimiter
+		-- asciidocFilterBlock
+		-- asciidocHLabel
+		-- asciidocIdMarker
+		-- asciidocIndexTerm
+		-- asciidocLineBreak
+		-- asciidocList
+		-- asciidocListBullet
+		-- asciidocListContinuation
+		-- asciidocListLabel
+		-- asciidocListNumber
+		-- asciidocListingBlock
+		-- asciidocLiteralBlock
+		-- asciidocLiteralParagraph
+		-- asciidocMacro
+		-- asciidocMacroAttributes
+		-- asciidocOneLineTitle
+		-- asciidocOpenBlockDelimiter
+		-- asciidocPagebreak
+		-- asciidocPassthroughBlock
+		-- asciidocQuoteBlockDelimiter
+		-- asciidocQuotedAttributeList
+		-- asciidocQuotedBold
+		-- asciidocQuotedDoubleQuoted
+		-- asciidocQuotedEmphasized
+		-- asciidocQuotedEmphasized2
+		asciidocQuotedEmphasizedItalic = { fg = glitter.bright_fg},
+		-- asciidocQuotedMonospaced
+		-- asciidocQuotedMonospaced2
+		-- asciidocQuotedSingleQuoted
+		-- asciidocQuotedSubscript
+		-- asciidocQuotedSuperscript
+		-- asciidocQuotedUnconstrainedBold
+		-- asciidocQuotedUnconstrainedEmphasized
+		-- asciidocQuotedUnconstrainedMonospaced
+		-- asciidocRefMacro
+		-- asciidocRuler
+		-- asciidocSidebarDelimiter
+		-- asciidocTableBlock
+		-- asciidocTableBlock2
+		-- asciidocTableDelimiter
+		-- asciidocTableDelimiter2
+		-- asciidocTablePrefix
+		-- asciidocTablePrefix2
+		-- asciidocTable_OLD
+		-- asciidocTitleUnderline
+		-- asciidocToDo
+		-- asciidocTriplePlusPassthrough
+		-- asciidocTwoLineTitle
+		-- asciidocURL
+		-- rcAttribute
+		rcCaptionParam =	{ fg = glitter.green	},
+		-- rcCharacter
+		-- rcComment
+		-- rcComment2String
+		-- rcCommentError
+		-- rcCommentSkip
+		-- rcCommentString
+		rcCommonAttribute =	{ fg = glitter.red	},
+		-- rcDefine
+		-- rcError
+		-- rcFloat
+		-- rcInParen
+		-- rcInclude
+		-- rcIncluded
+		rcLanguage =	{ fg = glitter.red,					style = glitter.reverse},
+		rcMainObject =	{ fg = glitter.default_fg	},
+		-- rcNumber
+		-- rcOctalError
+		rcParam =	{ fg = glitter.green_bright	},
+		-- rcParen
+		-- rcParenError
+		-- rcPreCondit
+		-- rcPreProc
+		-- rcSpecial
+		-- rcSpecialCharacter
+		rcStatement =	{ fg = glitter.blue		},
+		-- rcStdId
+		-- rcString
+		rcSubObject = { fg = glitter.bright_fg		}
+		-- rcTodo
 		-- GitGutterAdd = {fg = lvim.color_add},
 		-- GitGutterChange = {fg = lvim.color_change},
 		-- GitGutterDelete = {fg = lvim.color_delete},
