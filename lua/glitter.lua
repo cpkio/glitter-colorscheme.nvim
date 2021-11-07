@@ -424,8 +424,8 @@ function glitter.load_syntax()
 		Tabline =			{fg = glitter.gray,					bg = glitter.dark},
 		TabLineFill =			{bg = glitter.dark,											style = glitter.none},
 		TabLineSel =			{fg = glitter.bright_fg,				bg = glitter.default_bg,			style = glitter.none},
-		StatusLine =			{fg = glitter.default_fg,				bg = glitter.bright_bg,				style = glitter.none},
-		StatusLineNC =			{fg = glitter.gray,					bg = glitter.bright_bg,				style = glitter.none},
+		StatusLine =			{fg = glitter.default_fg,				bg = glitter.dark,				style = glitter.none},
+		StatusLineNC =			{fg = glitter.gray,					bg = glitter.dark,				style = glitter.none},
 		SpellBad =			{fg = glitter.red,					bg = glitter.none,				style = glitter.underline},
 		SpellCap =			{fg = glitter.red,					bg = glitter.none,				style = glitter.underline},
 		SpellLocal =			{fg = glitter.red,					bg = glitter.none,				style = glitter.underline},
@@ -547,7 +547,7 @@ function glitter.load_plugin_syntax()
 		statusInsert =			{ fg = glitter.dark,					bg = glitter.insert},
 		statusReplace =			{ fg = glitter.dark,					bg = glitter.replace},
 		statusVisual =			{ fg = glitter.dark,					bg = glitter.visual},
-		statusInactive =		{ fg = glitter.gray,					bg = glitter.none },
+		statusInactive =		{ fg = glitter.gray,					bg = glitter.bright_bg },
 		statusCommand =			{ fg = glitter.dark,					bg = glitter.bright_fg },
 		statusChanged =			{ fg = glitter.bright_fg,				bg = glitter.red_bright },
 
@@ -555,6 +555,28 @@ function glitter.load_plugin_syntax()
 		IndentBlanklineContextChar =	{													style = {{"nocombine", "nocombine"}} },
 		IndentBlanklineSpaceChar =	{													style = {{"nocombine", "nocombine"}} },
 		IndentBlanklineSpaceCharBlankline = {													style = {{"nocombine", "nocombine"}} },
+
+		LspDiagnosticsDefaultHint =	{ fg = glitter.gray2 },
+		LspDiagnosticsDefaultError =	{ fg = glitter.red },
+		LspDiagnosticsDefaultWarning =	{ fg = glitter.green },
+		LspDiagnosticsDefaultInformation = { fg = glitter.blue},
+		LspDiagnosticsUnderlineError =	{													style = glitter.reverse },
+		LspDiagnosticsUnderlineWarning = {													style = glitter.underline },
+		LspDiagnosticsUnderlineInformation = {													style = glitter.none },
+		LspDiagnosticsUnderlineHint =	 {													style = glitter.none },
+
+		LspDiagnosticsFloatingError =	{ fg = glitter.bright_fg,				},
+		LspDiagnosticsFloatingHint =	{ fg = glitter.bright_fg,				},
+		LspDiagnosticsFloatingInformation =	{ fg = glitter.bright_fg,			},
+		LspDiagnosticsFloatingWarning =	{ fg = glitter.bright_fg,				},
+		-- LspDiagnosticsSignError
+		-- LspDiagnosticsSignHint
+		-- LspDiagnosticsSignInformation
+		-- LspDiagnosticsSignWarning
+		-- LspDiagnosticsVirtualTextError
+		-- LspDiagnosticsVirtualTextHint
+		-- LspDiagnosticsVirtualTextInformation
+		-- LspDiagnosticsVirtualTextWarning
 
 		-- asciidocAdmonition
 		-- asciidocAnchorMacro
@@ -667,31 +689,6 @@ function glitter.load_plugin_syntax()
 		-- SignifySignAdd = {fg = lvim.color_add},
 		-- SignifySignChange = {fg = lvim.color_change},
 		-- SignifySignDelete = {fg = lvim.color_delete},
-		-- LspDiagnosticsSignError = {fg = lvim.color_error},
-		-- LspDiagnosticsSignWarning = {fg = lvim.color_warning},
-		-- LspDiagnosticsSignInformation = {fg = lvim.color_info},
-		-- LspDiagnosticsSignHint = {fg = lvim.color_info},
-		-- LspDiagnosticsVirtualTextError = {fg = lvim.color_error},
-		-- LspDiagnosticsVirtualTextWarning = {fg = lvim.color_warning},
-		-- LspDiagnosticsVirtualTextInformation = {fg = lvim.color_info},
-		-- LspDiagnosticsVirtualTextHint = {fg = lvim.color_info},
-		-- LspSignatureActiveParameter = {fg = lvim.color_info},
-		-- LspDiagnosticsUnderlineError = {
-			-- style = "undercurl",
-			-- sp = lvim.color_error
-		-- },
-		-- LspDiagnosticsUnderlineWarning = {
-			-- style = "undercurl",
-			-- sp = lvim.color_warning
-		-- },
-		-- LspDiagnosticsUnderlineInformation = {
-			-- style = "undercurl",
-			-- sp = lvim.color_info
-		-- },
-		-- LspDiagnosticsUnderlineHint = {
-			-- style = "undercurl",
-			-- sp = lvim.color_info
-		-- },
 		-- LvimHelperNormal = {fg = lvim.color_6, bg = lvim.base2},
 		-- LvimHelperTitle = {fg = lvim.color_9, bg = lvim.none},
 		-- NvimTreeNormal = {bg = lvim.black_background},
