@@ -361,9 +361,10 @@ glitter.dark = filter('Darkest color', glitter.palette, {dark}, {sort_by_lightne
 
 glitter.bright_fg = filter('Bright Foreground', glitter.palette, {light}, {sort_by_lightness}, {pop_back})
 glitter.bright_bg = filter('Bright Background', glitter.palette, {dark}, {sort_by_lightness}, {pop, 3}, {pop_back})
+glitter.bright_bg2 = filter('Bright Background 2', glitter.palette, {dark}, {sort_by_lightness}, {pop, 4}, {pop_back})
 
-glitter.red = filter('Reddish Colors', glitter.palette, {light}, {hue, 0}, { pop_back, 2 })
-glitter.red_bright = filter('Bright Red', glitter.palette, {light}, {hue, 0}, { pop_back, 1 })
+glitter.red = filter('Reddish Colors', glitter.palette, {light}, {hue, 0}, { pop_back, 1 })
+glitter.red_bright = filter('Bright Red', glitter.palette, {light}, {hue, 0}, { sort_by_lightness }, { pop_back, 1 })
 glitter.blue = filter('Blueish Colors', glitter.palette, {colorful}, {sort_by_blue}, {pop_back, 2})
 glitter.green = filter('Greenish Colors', glitter.palette, {dark, 0.7}, {sort_by_green}, {pop_back, 2})
 glitter.green_bright = filter('Bright Green', glitter.palette, {dark, 0.8}, {sort_by_lightness}, {hue, 40}, {pop_back, 2}, {pop})
@@ -384,7 +385,7 @@ function glitter.load_syntax()
 		SignColumn =			{fg = glitter.default_fg,				bg = glitter.none},
 		FoldColumn =			{fg = glitter.default_fg,				bg = glitter.none},
 		VertSplit =			{fg = glitter.dark,					bg = glitter.none},
-		FloatBorder =			{fg = glitter.default_fg,				bg = glitter.bright_bg},
+		FloatBorder =			{fg = glitter.default_fg,				bg = glitter.dark},
 		Folded =			{fg = glitter.bright_fg,				bg = glitter.none},
 		EndOfBuffer =			{fg = glitter.default_bg,				bg = glitter.none},
 		Search =			{fg = glitter.dark,					bg = glitter.default_fg},
@@ -421,9 +422,9 @@ function glitter.load_syntax()
 		-- WildMenu =			{fg = lvim.color_10,					bg = lvim.color_5},
 		-- Question =			{fg = lvim.color_3},
 		NormalFloat =			{fg = glitter.default_fg,				bg = glitter.bright_bg},
-		Tabline =			{fg = glitter.gray,					bg = glitter.dark},
+		Tabline =			{fg = glitter.default_fg,				bg = glitter.bright_bg},
 		TabLineFill =			{bg = glitter.dark,											style = glitter.none},
-		TabLineSel =			{fg = glitter.bright_fg,				bg = glitter.default_bg,			style = glitter.none},
+		TabLineSel =			{fg = glitter.bright_fg,				bg = glitter.bright_bg,				style = glitter.none},
 		StatusLine =			{fg = glitter.default_fg,				bg = glitter.dark,				style = glitter.none},
 		StatusLineNC =			{fg = glitter.gray,					bg = glitter.dark,				style = glitter.none},
 		SpellBad =			{fg = glitter.red,					bg = glitter.none,				style = glitter.underline},
@@ -542,29 +543,41 @@ function glitter.load_plugin_syntax()
 		TSVariableBuiltin =		{ fg = glitter.blue,												style = glitter.none },
 		-- TSWarning
 		statusOuter =			{ fg = glitter.dark,					bg = glitter.gray },
-		statusMiddle =			{ fg = glitter.green,					bg = glitter.bright_bg },
-		statusInner =			{ fg = glitter.default_fg,				bg = glitter.none },
+		statusMiddle =			{ fg = glitter.green,					bg = glitter.bright_bg2 },
+		statusInner =			{ fg = glitter.default_fg,				bg = glitter.bright_bg },
 		statusInsert =			{ fg = glitter.dark,					bg = glitter.insert},
 		statusReplace =			{ fg = glitter.dark,					bg = glitter.replace},
 		statusVisual =			{ fg = glitter.dark,					bg = glitter.visual},
 		statusInactive =		{ fg = glitter.gray,					bg = glitter.bright_bg },
 		statusCommand =			{ fg = glitter.dark,					bg = glitter.bright_fg },
-		statusChanged =			{ fg = glitter.bright_fg,				bg = glitter.red_bright },
+		statusChanged =			{ fg = glitter.bright_fg,				bg = glitter.red },
 
 		IndentBlanklineChar =		{ fg = glitter.gray2,											style = {{"nocombine", "nocombine"}}},
 		IndentBlanklineContextChar =	{													style = {{"nocombine", "nocombine"}} },
 		IndentBlanklineSpaceChar =	{													style = {{"nocombine", "nocombine"}} },
 		IndentBlanklineSpaceCharBlankline = {													style = {{"nocombine", "nocombine"}} },
 
+		DiagnosticHint =	{ fg = glitter.gray2, bg = glitter.bright_bg2 },
+		DiagnosticError =	{ fg = glitter.red, bg = glitter.bright_bg2 },
+		DiagnosticWarning =	{ fg = glitter.green, bg = glitter.bright_bg2 },
+		DiagnosticInformation = { fg = glitter.blue, bg = glitter.bright_bg2},
+		DiagnosticVirtualtextHint =	{ fg = glitter.gray2, bg = glitter.none },
+		DiagnosticVirtualtextError =	{ fg = glitter.red, bg = glitter.none },
+		DiagnosticVirtualtextWarning =	{ fg = glitter.green, bg = glitter.none },
+		DiagnosticVirtualtextInformation = { fg = glitter.blue, bg = glitter.none},
+		DiagnosticSignHint =	{ fg = glitter.gray2, bg = glitter.none },
+		DiagnosticSignError =	{ fg = glitter.red, bg = glitter.none },
+		DiagnosticSignWarning =	{ fg = glitter.green, bg = glitter.none },
+		DiagnosticSignInformation = { fg = glitter.blue, bg = glitter.none},
+
 		LspDiagnosticsDefaultHint =	{ fg = glitter.gray2 },
 		LspDiagnosticsDefaultError =	{ fg = glitter.red },
 		LspDiagnosticsDefaultWarning =	{ fg = glitter.green },
 		LspDiagnosticsDefaultInformation = { fg = glitter.blue},
 		LspDiagnosticsUnderlineError =	{													style = glitter.reverse },
-		LspDiagnosticsUnderlineWarning = {													style = glitter.underline },
-		LspDiagnosticsUnderlineInformation = {													style = glitter.none },
-		LspDiagnosticsUnderlineHint =	 {													style = glitter.none },
-
+		LspDiagnosticsUnderlineWarning = { fg = glitter.red,											style = glitter.underline },
+		LspDiagnosticsUnderlineInformation = {													style = glitter.underline },
+		LspDiagnosticsUnderlineHint =	 {													style = glitter.underline },
 		LspDiagnosticsFloatingError =	{ fg = glitter.bright_fg,				},
 		LspDiagnosticsFloatingHint =	{ fg = glitter.bright_fg,				},
 		LspDiagnosticsFloatingInformation =	{ fg = glitter.bright_fg,			},
@@ -671,7 +684,7 @@ function glitter.load_plugin_syntax()
 		rcStatement =	{ fg = glitter.blue		},
 		-- rcStdId
 		-- rcString
-		rcSubObject = { fg = glitter.bright_fg		}
+		rcSubObject = { fg = glitter.bright_fg		},
 		-- rcTodo
 		-- GitGutterAdd = {fg = lvim.color_add},
 		-- GitGutterChange = {fg = lvim.color_change},
@@ -717,6 +730,8 @@ function glitter.load_plugin_syntax()
 		-- TelescopeMultiSelection = {fg = lvim.color_11},
 		-- Floaterm = {fg = lvim.color_9},
 		-- FloatermBorder = {fg = lvim.color_1},
+		VimwikiItalic = { fg = glitter.red_bright },
+		VimwikiBold = { fg = glitter.green_bright },
 	}
 	return plugin_syntax
 end
