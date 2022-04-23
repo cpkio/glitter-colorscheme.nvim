@@ -125,25 +125,33 @@ function colorful(tbl, value)
 	return result
 end
 
-function hue(tbl, angle)
+-- Pick colors from palette @tbl based on target hue @angle and spread
+function hue(tbl, angle, spread)
 	if debug then io.write('filter by hue') end
-	local result = clone(tbl)
+	local result = {}
 	angle = angle or 180
+	spread = spread or hue_spread
 	::reiterate::
-	local anglePlus = angle + hue_spread
-	local angleMinus = angle - hue_spread
-	if (angle + hue_spread > 360) then anglePlus = angle + hue_spread - 360 end
-	if (angle - hue_spread < 0) then angleMinus = angle - hue_spread + 360 end
-	::restart::
-	for i, item in ipairs(result) do
-		local h, _, _ = colors.rgb_string_to_hsl(item[2])
-		if (h >= anglePlus) and (h <= angleMinus) then table.remove(result, i); goto restart end
+	local anglePlus = nil
+	local angleMinus = nil
+	if (angle + spread >= 360) then anglePlus = angle + spread - 360 else anglePlus = angle + spread end
+	if (angle - spread < 0) then angleMinus = angle - spread + 360 else angleMinus = angle - spread end
+	if debug then io.write('anglePlus: ', anglePlus, '\n') end
+	if debug then io.write('angleMinus: ', angleMinus, '\n') end
+	for i = 1, #tbl do
+		local h, _, _ = colors.rgb_string_to_hsl(tbl[i][2])
+		if anglePlus > angleMinus then
+			if (h >= angleMinus) and (h <= anglePlus) then table.insert(result, tbl[i]) end
+		else
+			if (h >= 0) and (h <= anglePlus) then table.insert(result, tbl[i]) end
+			if (h <= 360) and (h >= angleMinus) then table.insert(result, tbl[i]) end
+		end
 	end
-	if #result == 0 then hue_spread = hue_spread + 12; goto reiterate end
+	if #result == 0 then spread = spread * 1.2; goto reiterate end
 	return result
 end
 
--- Взятие верхних позиций таблицы
+-- Pick @amount top table entries
 function pop(tbl, amount)
 	if debug then io.write('take N top elements') end
 	local result = {}
@@ -155,7 +163,7 @@ end
 function slice(tbl)
 end
 
--- Взятие нижних позиций из таблицы
+-- Pick @amount bottom entries
 function pop_back(tbl, amount)
 	if debug then io.write('take N bottom elements') end
 	local result = {}
@@ -369,6 +377,8 @@ glitter.blue = filter('Blueish Colors', glitter.palette, {colorful}, {sort_by_bl
 glitter.green = filter('Greenish Colors', glitter.palette, {dark, 0.7}, {sort_by_green}, {pop_back, 2})
 glitter.green_bright = filter('Bright Green', glitter.palette, {dark, 0.8}, {sort_by_lightness}, {hue, 40}, {pop_back, 2}, {pop})
 
+glitter.purple = filter('Purple', glitter.palette, {hue, 300})
+
 glitter.insert = filter('INSERT Mode Color', glitter.blue, {sort_by_blue}, {pop_back, 2}, {pop})
 glitter.replace = filter('REPLACE Mode Color', glitter.red, {sort_by_red}, {pop_back, 2}, {pop})
 glitter.visual = filter('VISUAL Mode Color', glitter.green, {sort_by_green}, {pop_back, 2}, {pop})
@@ -428,7 +438,7 @@ function glitter.load_syntax()
 		StatusLine =			{fg = glitter.default_fg,				bg = glitter.dark,				style = glitter.none},
 		StatusLineNC =			{fg = glitter.gray,					bg = glitter.dark,				style = glitter.none},
 		SpellBad =			{fg = glitter.red,					bg = glitter.none,				style = glitter.underline},
-		SpellCap =			{fg = glitter.red,					bg = glitter.none,				style = glitter.underline},
+		SpellCap =			{fg = glitter.purple,					bg = glitter.none,				style = glitter.underline},
 		SpellLocal =			{fg = glitter.red,					bg = glitter.none,				style = glitter.underline},
 		SpellRare =			{fg = glitter.blue,					bg = glitter.none,				style = glitter.underline},
 		Visual =			{fg = glitter.dark,					bg = glitter.blue},
@@ -732,6 +742,7 @@ function glitter.load_plugin_syntax()
 		-- FloatermBorder = {fg = lvim.color_1},
 		VimwikiItalic = { fg = glitter.red_bright },
 		VimwikiBold = { fg = glitter.green_bright },
+		NvimCmpGhostText = { fg = glitter.bright_bg2 }
 	}
 	return plugin_syntax
 end
