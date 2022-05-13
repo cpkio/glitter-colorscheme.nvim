@@ -563,7 +563,8 @@ function glitter.load_plugin_syntax()
 		statusChanged =			{ fg = glitter.bright_fg,				bg = glitter.red },
 
 		IndentBlanklineChar =		{ fg = glitter.gray2,											style = {{"nocombine", "nocombine"}}},
-		IndentBlanklineContextChar =	{													style = {{"nocombine", "nocombine"}} },
+		IndentBlanklineContextChar =	{ fg = glitter.purple,											style = {{"nocombine", "nocombine"}} },
+		IndentBlanklineContextStart =	{ fg = glitter.purple,											style = {{"nocombine", "nocombine"}} },
 		IndentBlanklineSpaceChar =	{													style = {{"nocombine", "nocombine"}} },
 		IndentBlanklineSpaceCharBlankline = {													style = {{"nocombine", "nocombine"}} },
 
