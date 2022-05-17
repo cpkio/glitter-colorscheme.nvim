@@ -400,7 +400,7 @@ function glitter.load_syntax()
 		EndOfBuffer =			{fg = glitter.default_bg,				bg = glitter.none},
 		Search =			{fg = glitter.dark,					bg = glitter.default_fg},
 		IncSearch =			{fg = glitter.dark,					bg = glitter.green},
-		-- ColorColumn 			{fg = lvim.none,					bg = lvim.bg_highlight},
+		ColorColumn =			{fg = glitter.none,					bg = glitter.bright_bg},
 		-- Conceal =			{fg = lvim.color_12,					bg = lvim.none},
 		-- Cursor =			{fg = lvim.none,					bg = lvim.none,					style = "reverse"},
 		-- vCursor =			{fg = lvim.none,					bg = lvim.none,					style = "reverse"},
