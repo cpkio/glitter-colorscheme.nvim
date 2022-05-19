@@ -1,1 +1,1 @@
-lua require('glitter')
+lua require'glitter'.setup()
