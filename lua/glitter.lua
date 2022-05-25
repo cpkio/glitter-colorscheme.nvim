@@ -8,10 +8,57 @@ local debug = false
 
 local logfile = nil
 
-if debug then
-  logfile = io.open('r:\\colorlog.txt', "a")
-  io.output(logfile)
+local function clone(t)
+	local u = setmetatable({}, getmetatable(t))
+	for i, v in pairs(t) do
+		u[i] = v
+	end
+	return u
 end
+
+local function merge(x,y)
+	for i, value in ipairs(y) do
+		x[#x+i] = value
+	end
+	return x
+end
+
+local mt = {
+	-- `+` is for color sets intersection
+	__add = function(a,b)
+		res = {}; setmetatable(res, mt)
+		for j, v2 in ipairs(b) do
+			for i, v1 in ipairs(a) do
+				if a[i][2] == b[j][2] then
+					table.insert(res, a[i])
+				end
+			end
+		end
+		return res
+	end,
+
+	-- `-` removes intersections and joins the remaining
+	__sub = function(a,b)
+		l = clone(a)
+		r = clone(b)
+		::restart::
+		for j in ipairs(r) do
+			for i in ipairs(l) do
+				if l[i][2] == r[j][2] then
+					table.remove(l,i)
+					table.remove(r,j)
+					goto restart
+				end
+			end
+		end
+		merge(l,r)
+		return l
+	end,
+
+	-- `*` does something I didnt come up with
+	__mul = function(a,b)
+	end
+}
 
 local palette = {
 	{0, '#282c34'},
@@ -31,14 +78,6 @@ local palette = {
 	{14, '#e2f9fc'},
 	{15, '#abb2bf'},
 }
-
-local function clone(t)
-	local u = setmetatable({}, getmetatable(t))
-	for i, v in pairs(t) do
-		u[i] = v
-	end
-	return u
-end
 
 local function transform(tbl)
 	for _,item in ipairs(tbl) do
@@ -119,16 +158,16 @@ local function colorful(tbl, value)
 end
 
 -- Pick colors from palette @tbl based on target hue @angle and spread
-local function hue(tbl, angle, spread)
+local function hue(tbl, angle, spr)
 	if debug then io.write('filter by hue') end
 	local result = {}
 	angle = angle or 180
-	spread = spread or hue_spread
+	spr = spr or hue_spread
 	::reiterate::
 	local anglePlus = nil
 	local angleMinus = nil
-	if (angle + spread >= 360) then anglePlus = angle + spread - 360 else anglePlus = angle + spread end
-	if (angle - spread < 0) then angleMinus = angle - spread + 360 else angleMinus = angle - spread end
+	if (angle + spr >= 360) then anglePlus = angle + spr - 360 else anglePlus = angle + spr end
+	if (angle - spr < 0) then angleMinus = angle - spr + 360 else angleMinus = angle - spr end
 	if debug then io.write('anglePlus: ', anglePlus, '\n') end
 	if debug then io.write('angleMinus: ', angleMinus, '\n') end
 	for i = 1, #tbl do
@@ -140,7 +179,7 @@ local function hue(tbl, angle, spread)
 			if (h <= 360) and (h >= angleMinus) then table.insert(result, tbl[i]) end
 		end
 	end
-	if #result == 0 then spread = spread * 1.2; goto reiterate end
+	if #result == 0 then spr = spr * 1.2; goto reiterate end
 	return result
 end
 
@@ -176,7 +215,7 @@ end
 local function sort_by_hue(tbl)
 	if debug then io.write('sort by hue') end
 	local result = clone(tbl)
-	table.sort(tbl, function(e1, e2)
+	table.sort(result, function(e1, e2)
 		h1, _, _ = colors.rgb_string_to_hsl(e1[2])
 		h2, _, _ = colors.rgb_string_to_hsl(e2[2])
 		return h1 < h2
@@ -317,13 +356,14 @@ end
 local function filter(filtername, tbl, ...)
 	if debug then io.write('\nNEW FILTER CHAIN: ', filtername, '\n') end
 	local result = clone(tbl)
-	for _, fn in ipairs({...}) do
+	for i, fn in ipairs({...}) do
 		local f = fn[1]
 		local param = fn[2]
 		local param2 = fn[3]
 		result = f(result, param, param2)
-	if debug then io.write(print_colors(result, string.format('\ncall #%d %s ------------\n', i, vim.inspect(fn)))) end
+		if debug then io.write(print_colors(result, string.format('\ncall #%d %s ------------\n', i, vim.inspect(fn)))) end
 	end
+	setmetatable(result, mt)
 	return result
 end
 
@@ -360,16 +400,16 @@ local function load_syntax()
 		Search =			{fg = darkest,					bg = default_fg},
 		IncSearch =			{fg = darkest,					bg = green},
 		ColorColumn =			{fg = none,					bg = bright_bg},
-		-- Conceal =			{fg = lvim.color_12,					bg = lvim.none},
-		-- Cursor =			{fg = lvim.none,					bg = lvim.none,					style = "reverse"},
-		-- vCursor =			{fg = lvim.none,					bg = lvim.none,					style = "reverse"},
-		-- iCursor =			{fg = lvim.none,					bg = lvim.none,					style = "reverse"},
-		-- lCursor =			{fg = lvim.none,					bg = lvim.none,					style = "reverse"},
-		-- CursorIM =			{fg = lvim.none,					bg = lvim.none,					style = "reverse"},
-		-- CursorColumn =		{fg = lvim.none,					bg = lvim.bg_highlight},
+		-- Conceal =			{fg = color_12,					bg = none},
+		-- Cursor =			{fg = none,					bg = none,					style = "reverse"},
+		-- vCursor =			{fg = none,					bg = none,					style = "reverse"},
+		-- iCursor =			{fg = none,					bg = none,					style = "reverse"},
+		-- lCursor =			{fg = none,					bg = none,					style = "reverse"},
+		-- CursorIM =			{fg = none,					bg = none,					style = "reverse"},
+		-- CursorColumn =		{fg = none,					bg = bg_highlight},
 		CursorLine =			{fg = bright_fg,				bg = bright_bg,				style = none},
 		LineNr =			{fg = gray},
-		-- qfLineNr =			{fg = lvim.color_10},
+		-- qfLineNr =			{fg = color_10},
 		CursorLineNr =			{fg = gray,											style = reverse},
 		DiffAdd =			{fg = green_bright,				bg = none},
 		DiffChange =			{fg = red,					bg = none},
@@ -377,19 +417,19 @@ local function load_syntax()
 		DiffText =			{fg = blue,					bg = none},
 		-- Directory =			{fg = color_8,					bg = none},
 		ErrorMsg =			{fg = darkest,					bg = red},
-		WarningMsg =			{fg = red,					bg = none},
-		-- ModeMsg =			{fg = lvim.color_6,					bg = lvim.none},
+		WarningMsg =			{fg = red,					bg = default_bg},
+		-- ModeMsg =			{fg = color_6,					bg = none},
 		MatchParen =			{fg = bright_fg},
 		NonText =			{fg = gray}, -- отвечает за символы конца строки
 		Whitespace =			{fg = gray}, -- отвечает за показ непечатаемых символов (пробелов и прочих)
-		SpecialKey =			{fg = red},
+		SpecialKey =			{fg = green_bright},
 		Pmenu =				{fg = default_fg,				bg = bright_bg},
 		PmenuSel =			{fg = bright_fg,				bg = gray},
 		PmenuSelBold =			{fg = bright_fg},
 		PmenuSbar =			{fg = gray},
 		PmenuThumb =			{fg = bright_fg,				bg = gray},
-		-- WildMenu =			{fg = lvim.color_10,					bg = lvim.color_5},
-		-- Question =			{fg = lvim.color_3},
+		-- WildMenu =			{fg = color_10,					bg = color_5},
+		-- Question =			{fg = color_3},
 		NormalFloat =			{fg = default_fg,				bg = bright_bg},
 		TabLine =			{fg = default_fg,				bg = gray },
 		TabLineFill =			{bg = darkest,											style = none},
@@ -401,10 +441,10 @@ local function load_syntax()
 		SpellLocal =			{fg = red,					bg = none,				style = underline},
 		SpellRare =			{fg = blue,					bg = none,				style = underline},
 		Visual =			{fg = darkest,					bg = blue},
-		-- VisualNOS =			{fg = darkest,					bg = glitter.blue},
-		-- QuickFixLine =		{fg = lvim.color_9},
-		-- Debug =			{fg = lvim.color_2},
-		-- debugBreakpoint =		{fg = lvim.bg,						bg = lvim.color_0},
+		-- VisualNOS =			{fg = darkest,					bg = blue},
+		-- QuickFixLine =		{fg = color_9},
+		-- Debug =			{fg = color_2},
+		-- debugBreakpoint =		{fg = bg,						bg = color_0},
 		Boolean =			{ fg = pool,											style = none },
 		Character =			{ fg = pool,											style = none },
 		Comment =			{ fg = gray,											style = none },
@@ -412,7 +452,7 @@ local function load_syntax()
 		Constant =			{ fg = pool,											style = none },
 		Define =			{ fg = pool,											style = none },
 		Delimiter =			{ fg = bright_fg,										style = none },
-		Error =				{ fg = pool,											style = none },
+		Error =				{ fg = red,											style = none },
 		Exception =			{ fg = pool,											style = none },
 		Float =				{ fg = pool,											style = none },
 		Function =			{ fg = pool,											style = none },
@@ -420,14 +460,14 @@ local function load_syntax()
 		Ignore =			{ fg = pool,											style = none },
 		Include =			{ fg = pool,											style = none },
 		Keyword =			{ fg = pool,											style = italic },
-		Label =				{ fg = pool,											style = none },
-		Macro =				{ fg = pool,											style = none },
+		Label =				{ fg = green,											style = none },
+		Macro =				{ fg = blue,											style = none },
 		Number =			{ fg = pool,											style = none },
 		Operator =			{ fg = pool,											style = none },
 		PreCondit =			{ fg = pool,											style = none },
 		PreProc =			{ fg = pool,											style = none },
 		Repeat =			{ fg = pool,											style = none },
-		Special =			{ fg = pool,											style = none },
+		Special =			{ fg = purple,											style = none },
 		SpecialChar =			{ fg = pool,											style = none },
 		SpecialComment =		{ fg = pool,											style = none },
 		Statement =			{ fg = pool,											style = none },
@@ -527,18 +567,18 @@ local function load_plugin_syntax()
 		IndentBlanklineSpaceChar =	{													style = {{"nocombine", "nocombine"}} },
 		IndentBlanklineSpaceCharBlankline = {													style = {{"nocombine", "nocombine"}} },
 
-		DiagnosticHint =	{ fg = gray2, bg = bright_bg2 },
-		DiagnosticError =	{ fg = red, bg = bright_bg2 },
-		DiagnosticWarning =	{ fg = green, bg = bright_bg2 },
-		DiagnosticInformation = { fg = blue, bg = bright_bg2},
+		DiagnosticHint =	{ fg = gray2, bg = none },
+		DiagnosticError =	{ fg = red, bg = none },
+		DiagnosticWarning =	{ fg = green, bg = none },
+		DiagnosticInformation = { fg = blue, bg = none },
 		DiagnosticVirtualtextHint =	{ fg = gray2, bg = none },
 		DiagnosticVirtualtextError =	{ fg = red, bg = none },
 		DiagnosticVirtualtextWarning =	{ fg = green, bg = none },
-		DiagnosticVirtualtextInformation = { fg = blue, bg = none},
+		DiagnosticVirtualtextInformation = { fg = blue, bg = none },
 		DiagnosticSignHint =	{ fg = gray2, bg = none },
 		DiagnosticSignError =	{ fg = red, bg = none },
 		DiagnosticSignWarning =	{ fg = green, bg = none },
-		DiagnosticSignInformation = { fg = blue, bg = none},
+		DiagnosticSignInformation = { fg = blue, bg = none },
 
 		LspDiagnosticsDefaultHint =	{ fg = gray2 },
 		LspDiagnosticsDefaultError =	{ fg = red },
@@ -656,50 +696,50 @@ local function load_plugin_syntax()
 		-- rcString
 		rcSubObject = { fg = bright_fg		},
 		-- rcTodo
-		-- GitGutterAdd = {fg = lvim.color_add},
-		-- GitGutterChange = {fg = lvim.color_change},
-		-- GitGutterDelete = {fg = lvim.color_delete},
-		-- GitGutterChangeDelete = {fg = lvim.color_change_delete},
-		-- GitSignsAdd = {fg = lvim.color_add},
-		-- GitSignsChange = {fg = lvim.color_change},
-		-- GitSignsDelete = {fg = lvim.color_delete},
-		-- GitSignsAddNr = {fg = lvim.color_add},
-		-- GitSignsChangeNr = {fg = lvim.color_change},
-		-- GitSignsDeleteNr = {fg = lvim.color_delete},
-		-- GitSignsAddLn = {fg = lvim.color_add},
-		-- GitSignsChangeLn = {fg = lvim.color_change},
-		-- GitSignsDeleteLn = {fg = lvim.color_delete},
-		-- SignifySignAdd = {fg = lvim.color_add},
-		-- SignifySignChange = {fg = lvim.color_change},
-		-- SignifySignDelete = {fg = lvim.color_delete},
-		-- LvimHelperNormal = {fg = lvim.color_6, bg = lvim.base2},
-		-- LvimHelperTitle = {fg = lvim.color_9, bg = lvim.none},
-		-- NvimTreeNormal = {bg = lvim.black_background},
-		-- NvimTreeFolderName = {fg = lvim.color_4},
-		-- NvimTreeOpenedFolderName = {fg = lvim.color_11},
-		-- NvimTreeEmptyFolderName = {fg = lvim.color_4},
-		-- NvimTreeRootFolder = {fg = lvim.color_4},
-		-- NvimTreeSpecialFile = {fg = lvim.fg, bg = lvim.none, style = "NONE"},
-		-- NvimTreeFolderIcon = {fg = lvim.color_4},
-		-- NvimTreeIndentMarker = {fg = lvim.hl},
-		-- NvimTreeSignError = {fg = lvim.color_error},
-		-- NvimTreeSignWarning = {fg = lvim.color_warning},
-		-- NvimTreeSignInformation = {fg = lvim.color_info},
-		-- NvimTreeSignHint = {fg = lvim.color_info},
-		-- NvimTreeLspDiagnosticsError = {fg = lvim.color_error},
-		-- NvimTreeLspDiagnosticsWarning = {fg = lvim.color_warning},
-		-- NvimTreeLspDiagnosticsInformation = {fg = lvim.color_info},
-		-- NvimTreeLspDiagnosticsHint = {fg = lvim.color_info},
-		-- NvimTreeWindowPicker = {gui = "bold", fg = lvim.bg, bg = lvim.color_9},
-		-- TroubleNormal = {bg = lvim.black_background},
-		-- TelescopeBorder = {fg = lvim.color_11},
-		-- TelescopePromptBorder = {fg = lvim.color_3},
-		-- TelescopeMatching = {fg = lvim.color_11},
-		-- TelescopeSelection = {fg = lvim.color_3, bg = lvim.bg_highlight},
-		-- TelescopeSelectionCaret = {fg = lvim.color_3},
-		-- TelescopeMultiSelection = {fg = lvim.color_11},
-		-- Floaterm = {fg = lvim.color_9},
-		-- FloatermBorder = {fg = lvim.color_1},
+		-- GitGutterAdd = {fg = color_add},
+		-- GitGutterChange = {fg = color_change},
+		-- GitGutterDelete = {fg = color_delete},
+		-- GitGutterChangeDelete = {fg = color_change_delete},
+		-- GitSignsAdd = {fg = color_add},
+		-- GitSignsChange = {fg = color_change},
+		-- GitSignsDelete = {fg = color_delete},
+		-- GitSignsAddNr = {fg = color_add},
+		-- GitSignsChangeNr = {fg = color_change},
+		-- GitSignsDeleteNr = {fg = color_delete},
+		-- GitSignsAddLn = {fg = color_add},
+		-- GitSignsChangeLn = {fg = color_change},
+		-- GitSignsDeleteLn = {fg = color_delete},
+		-- SignifySignAdd = {fg = color_add},
+		-- SignifySignChange = {fg = color_change},
+		-- SignifySignDelete = {fg = color_delete},
+		-- LvimHelperNormal = {fg = color_6, bg = base2},
+		-- LvimHelperTitle = {fg = color_9, bg = none},
+		-- NvimTreeNormal = {bg = black_background},
+		-- NvimTreeFolderName = {fg = color_4},
+		-- NvimTreeOpenedFolderName = {fg = color_11},
+		-- NvimTreeEmptyFolderName = {fg = color_4},
+		-- NvimTreeRootFolder = {fg = color_4},
+		-- NvimTreeSpecialFile = {fg = fg, bg = none, style = "NONE"},
+		-- NvimTreeFolderIcon = {fg = color_4},
+		-- NvimTreeIndentMarker = {fg = hl},
+		-- NvimTreeSignError = {fg = color_error},
+		-- NvimTreeSignWarning = {fg = color_warning},
+		-- NvimTreeSignInformation = {fg = color_info},
+		-- NvimTreeSignHint = {fg = color_info},
+		-- NvimTreeLspDiagnosticsError = {fg = color_error},
+		-- NvimTreeLspDiagnosticsWarning = {fg = color_warning},
+		-- NvimTreeLspDiagnosticsInformation = {fg = color_info},
+		-- NvimTreeLspDiagnosticsHint = {fg = color_info},
+		-- NvimTreeWindowPicker = { fg = bg, bg = color_9},
+		-- TroubleNormal = {bg = black_background},
+		-- TelescopeBorder = {fg = color_11},
+		-- TelescopePromptBorder = {fg = color_3},
+		-- TelescopeMatching = {fg = color_11},
+		-- TelescopeSelection = {fg = color_3, bg = bg_highlight},
+		-- TelescopeSelectionCaret = {fg = color_3},
+		-- TelescopeMultiSelection = {fg = color_11},
+		-- Floaterm = {fg = color_9},
+		-- FloatermBorder = {fg = color_1},
 		VimwikiItalic = { fg = red_bright },
 		VimwikiBold = { fg = green_bright },
 		NvimCmpGhostText = { fg = bright_bg2 }
@@ -740,10 +780,14 @@ local function colorscheme()
 	async_load_plugin:send()
 end
 
-if debug then io.close(logfile) end
-
 local function setup(pal)
 	palette = pal or palette
+	setmetatable(palette, mt)
+
+	if debug then
+		logfile = io.open('r:\\colorlog.txt', "a")
+		io.output(logfile)
+	end
 
 	-- Selecting the colors from palette
 	none = {{"NONE", "NONE"}}
@@ -760,17 +804,20 @@ local function setup(pal)
 	bright_bg = filter('Bright Background', palette, {dark}, {sort_by_lightness}, {pop, 3}, {pop_back})
 	bright_bg2 = filter('Bright Background 2', palette, {dark}, {sort_by_lightness}, {pop, 4}, {pop_back})
 
-	red = filter('Reddish Colors', palette, {light}, {hue, 0}, { pop_back, 1 })
-	red_bright = filter('Bright Red', palette, {light}, {hue, 0}, { sort_by_lightness }, { pop_back, 1 })
-	blue = filter('Blueish Colors', palette, {colorful}, {sort_by_blue}, {pop_back, 2})
-	green = filter('Greenish Colors', palette, {dark, 0.7}, {sort_by_green}, {pop_back, 2})
-	green_bright = filter('Bright Green', palette, {dark, 0.8}, {sort_by_lightness}, {hue, 40}, {pop_back, 2}, {pop})
+	red = filter('Reddish Colors', palette, {dark, 0.7}, {hue,0}, {sort_by_red}, {pop_back, 2}, {sort_by_lightness}, {pop})
+	red_bright = filter('Bright Red', palette, {dark, 0.7}, {hue,0}, {sort_by_red}, {pop_back, 2}, {sort_by_lightness}, {pop_back})
+
+	blue = filter('Blueish Colors', palette, {dark, 0.7}, {hue,240,36}, {sort_by_blue}, {pop_back, 2}, {sort_by_lightness}, {pop})
+	blue_bright = filter('Bright Blue', palette, {dark, 0.7}, {hue,240,36}, {sort_by_blue}, {pop_back, 2}, {sort_by_lightness}, {pop_back})
+
+	green = filter('Greenish Colors', palette, {dark, 0.7}, {hue,120}, {sort_by_green}, {pop_back, 2}, {sort_by_lightness}, {pop})
+	green_bright = filter('Bright Green', palette, {dark, 0.7}, {hue,120}, {sort_by_green}, {pop_back, 2}, {sort_by_lightness}, {pop_back})
 
 	purple = filter('Purple', palette, {hue, 300})
 
-	insert = filter('INSERT Mode Color', blue, {sort_by_blue}, {pop_back, 2}, {pop})
-	replace = filter('REPLACE Mode Color', red, {sort_by_red}, {pop_back, 2}, {pop})
-	visual = filter('VISUAL Mode Color', green, {sort_by_green}, {pop_back, 2}, {pop})
+	insert = filter('INSERT Mode Color', blue)
+	replace = filter('REPLACE Mode Color', red)
+	visual = filter('VISUAL Mode Color', green)
 
 	gray = filter('Gray', palette, {sort_by_saturation}, {pop, 5}, {sort_by_lightness}, {pop_back, 2}, {pop})
 	gray2 = filter('Gray2', palette, {sort_by_saturation}, {pop, 5}, {sort_by_lightness}, {pop_back, 3}, {pop})
@@ -778,6 +825,8 @@ local function setup(pal)
 	pool = filter('Random Colors Pool', palette, {colorful, 0.4}, {light, 0.5}, {dark, 0.7})
 
 	colorscheme()
+
+	if debug then io.close(logfile) end
 end
 
 return {
