@@ -600,7 +600,9 @@ local function load_plugin_syntax()
 		-- LspDiagnosticsVirtualTextHint
 		-- LspDiagnosticsVirtualTextInformation
 		-- LspDiagnosticsVirtualTextWarning
-
+		MarkSignHL = { fg = purple },
+		MarkSignNumHL = { fg = none, bg = none},
+		MarkVirtTextHL = { fg = gray },
 		-- asciidocAdmonition
 		-- asciidocAnchorMacro
 		-- asciidocAttributeEntry
