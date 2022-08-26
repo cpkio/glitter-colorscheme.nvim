@@ -561,9 +561,14 @@ local function load_plugin_syntax()
 		statusCommand =			{ fg = darkest,					bg = bright_fg },
 		statusChanged =			{ fg = bright_fg,				bg = red },
 
+		LineNrInsert =			{fg = insert},
+		CursorLineNrInsert =		{fg = insert,											style = reverse},
+		LineNrReplace =			{fg = replace},
+		CursorLineNrReplace =		{fg = replace,											style = reverse},
+
 		IndentBlanklineChar =		{ fg = gray2,											style = {{"nocombine", "nocombine"}}},
-		IndentBlanklineContextChar =	{ fg = purple,											style = {{"nocombine", "nocombine"}} },
-		IndentBlanklineContextStart =	{ fg = purple,											style = {{"nocombine", "nocombine"}} },
+		IndentBlanklineContextChar =	{ fg = bright_fg,											style = {{"nocombine", "nocombine"}} },
+		IndentBlanklineContextStart =	{ fg = bright_fg,											style = {{"nocombine", "nocombine"}} },
 		IndentBlanklineSpaceChar =	{													style = {{"nocombine", "nocombine"}} },
 		IndentBlanklineSpaceCharBlankline = {													style = {{"nocombine", "nocombine"}} },
 
@@ -751,14 +756,11 @@ end
 
 function InsertStatusColor(mode)
 	if (mode == 'i') then
-		highlight('LineNr', {fg = insert})
-		highlight('CursorLineNr', {fg = insert, style = reverse})
+	    vim.cmd'setlocal winhighlight=LineNr:LineNrInsert,LineNrAbove:LineNrInsert,LineNrBelow:LineNrInsert,CursorLineNr:CursorLineNrInsert'
 	elseif (mode == 'r') then
-		highlight('LineNr', {fg = replace})
-		highlight('CursorLineNr', {fg = replace, style = reverse})
+	    vim.cmd'setlocal winhighlight=LineNr:LineNrReplace,LineNrAbove:LineNrReplace,LineNrBelow:LineNrReplace,CursorLineNr:CursorLineNrReplace'
 	else
-		highlight('LineNr', {fg = gray})
-		highlight('CursorLineNr', {fg = gray, style = reverse})
+	    vim.cmd'setlocal winhighlight='
 	end
 end
 
