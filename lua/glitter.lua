@@ -407,7 +407,7 @@ local function load_syntax()
 		-- lCursor =			{fg = none,					bg = none,					style = "reverse"},
 		-- CursorIM =			{fg = none,					bg = none,					style = "reverse"},
 		-- CursorColumn =		{fg = none,					bg = bg_highlight},
-		CursorLine =			{fg = bright_fg,				bg = bright_bg,				style = none},
+		CursorLine =			{						bg = bright_bg,					style = none},
 		LineNr =			{fg = gray},
 		-- qfLineNr =			{fg = color_10},
 		CursorLineNr =			{fg = gray,											style = reverse},
