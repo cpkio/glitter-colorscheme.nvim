@@ -562,9 +562,9 @@ local function load_plugin_syntax()
 		statusChanged =			{ fg = bright_fg,				bg = red },
 
 		LineNrInsert =			{fg = insert},
-		CursorLineNrInsert =		{fg = insert,											style = reverse},
+		CursorLineNrInsert =		{fg = darkest,					bg = insert},
 		LineNrReplace =			{fg = replace},
-		CursorLineNrReplace =		{fg = replace,											style = reverse},
+		CursorLineNrReplace =		{fg = darkest,					bg = replace},
 
 		IndentBlanklineChar =		{ fg = gray2,											style = {{"nocombine", "nocombine"}}},
 		IndentBlanklineContextChar =	{ fg = bright_fg,											style = {{"nocombine", "nocombine"}} },
@@ -757,7 +757,7 @@ end
 function InsertStatusColor(mode)
 	if (mode == 'i') then
 	    vim.cmd'setlocal winhighlight=LineNr:LineNrInsert,LineNrAbove:LineNrInsert,LineNrBelow:LineNrInsert,CursorLineNr:CursorLineNrInsert'
-	elseif (mode == 'r') then
+	elseif (mode == 'r' or mode == 'v') then
 	    vim.cmd'setlocal winhighlight=LineNr:LineNrReplace,LineNrAbove:LineNrReplace,LineNrBelow:LineNrReplace,CursorLineNr:CursorLineNrReplace'
 	else
 	    vim.cmd'setlocal winhighlight='
