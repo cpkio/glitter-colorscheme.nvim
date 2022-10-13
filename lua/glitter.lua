@@ -432,7 +432,7 @@ local function load_syntax()
 		-- Question =			{fg = color_3},
 		NormalFloat =			{fg = default_fg,				bg = bright_bg},
 		TabLine =			{fg = default_fg,				bg = gray },
-		TabLineFill =			{bg = darkest,											style = none},
+		TabLineFill =			{fg = bright_fg,				bg = darkest,					style = none},
 		TabLineSel =			{fg = bright_fg,				bg = default_bg,				style = none},
 		StatusLine =			{fg = default_fg,				bg = darkest,				style = none},
 		StatusLineNC =			{fg = gray,					bg = darkest,				style = none},
