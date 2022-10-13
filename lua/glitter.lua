@@ -560,6 +560,7 @@ local function load_plugin_syntax()
 		statusInactive =		{ fg = gray,					bg = bright_bg },
 		statusCommand =			{ fg = darkest,					bg = bright_fg },
 		statusChanged =			{ fg = bright_fg,				bg = red },
+		statusFileType =		{ fg = bright_fg,				bg = bright_bg },
 
 		LineNrInsert =			{fg = insert},
 		CursorLineNrInsert =		{fg = darkest,					bg = insert},
@@ -572,10 +573,10 @@ local function load_plugin_syntax()
 		IndentBlanklineSpaceChar =	{													style = {{"nocombine", "nocombine"}} },
 		IndentBlanklineSpaceCharBlankline = {													style = {{"nocombine", "nocombine"}} },
 
-		DiagnosticHint =	{ fg = gray2, bg = none },
-		DiagnosticError =	{ fg = red, bg = none },
-		DiagnosticWarning =	{ fg = green, bg = none },
-		DiagnosticInformation = { fg = blue, bg = none },
+		DiagnosticHint =	{ fg = gray, bg = bright_bg },
+		DiagnosticError =	{ fg = red, bg = bright_bg },
+		DiagnosticWarning =	{ fg = green, bg = bright_bg },
+		DiagnosticInformation = { fg = blue, bg = bright_bg },
 		DiagnosticVirtualtextHint =	{ fg = gray2, bg = none },
 		DiagnosticVirtualtextError =	{ fg = red, bg = none },
 		DiagnosticVirtualtextWarning =	{ fg = green, bg = none },
