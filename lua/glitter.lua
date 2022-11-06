@@ -420,9 +420,9 @@ local function load_syntax()
 		WarningMsg =			{fg = red,					bg = default_bg},
 		-- ModeMsg =			{fg = color_6,					bg = none},
 		MatchParen =			{fg = bright_fg},
-		NonText =			{fg = gray}, -- отвечает за символы конца строки
-		Whitespace =			{fg = gray}, -- отвечает за показ непечатаемых символов (пробелов и прочих)
-		SpecialKey =			{fg = green_bright},
+		NonText =			{fg = gray,					bg = default_bg	}, -- отвечает за символы конца строки
+		Whitespace =			{fg = gray					}, -- отвечает за показ непечатаемых символов (пробелов и прочих)
+		SpecialKey =			{fg = green_bright,				bg = bright_bg },
 		Pmenu =				{fg = default_fg,				bg = bright_bg},
 		PmenuSel =			{fg = bright_fg,				bg = gray},
 		PmenuSelBold =			{fg = bright_fg},
@@ -440,7 +440,7 @@ local function load_syntax()
 		SpellCap =			{fg = purple,					bg = none,				style = underline},
 		SpellLocal =			{fg = red,					bg = none,				style = underline},
 		SpellRare =			{fg = blue,					bg = none,				style = underline},
-		Visual =			{fg = darkest,					bg = blue},
+		Visual =			{fg = darkest,					bg = visual },
 		-- VisualNOS =			{fg = darkest,					bg = blue},
 		-- QuickFixLine =		{fg = color_9},
 		-- Debug =			{fg = color_2},
@@ -566,6 +566,8 @@ local function load_plugin_syntax()
 		CursorLineNrInsert =		{fg = darkest,					bg = insert},
 		LineNrReplace =			{fg = replace},
 		CursorLineNrReplace =		{fg = darkest,					bg = replace},
+		LineNrVisual =			{fg = visual},
+		CursorLineNrVisual =		{fg = darkest,					bg = visual},
 
 		IndentBlanklineChar =		{ fg = gray2,											style = {{"nocombine", "nocombine"}}},
 		IndentBlanklineContextChar =	{ fg = bright_fg,											style = {{"nocombine", "nocombine"}} },
@@ -750,16 +752,46 @@ local function load_plugin_syntax()
 		-- FloatermBorder = {fg = color_1},
 		VimwikiItalic = { fg = red_bright },
 		VimwikiBold = { fg = green_bright },
+		-- эти расцветки не использовать, потому что с имеющимися
+		-- иконками эти иконки обрезаются из-за перемены цвета
+		-- CmpItemKind = { fg = random },
+		-- CmpItemKindClass = { fg = random },
+		-- CmpItemKindColor = { fg = random },
+		-- CmpItemKindConstant = { fg = random },
+		-- CmpItemKindConstructor = { fg = random },
+		-- CmpItemKindEnum = { fg = random },
+		-- CmpItemKindEnumMember = { fg = random },
+		-- CmpItemKindEvent = { fg = random },
+		-- CmpItemKindField = { fg = random },
+		-- CmpItemKindFile = { fg = random },
+		-- CmpItemKindFolder = { fg = random },
+		-- CmpItemKindFunction = { fg = random },
+		-- CmpItemKindInterface = { fg = random },
+		-- CmpItemKindKeyword = { fg = random },
+		-- CmpItemKindMethod = { fg = random },
+		-- CmpItemKindModule = { fg = random },
+		-- CmpItemKindOperator = { fg = random },
+		-- CmpItemKindProperty = { fg = random },
+		-- CmpItemKindReference = { fg = random },
+		-- CmpItemKindSnippet = { fg = random },
+		-- CmpItemKindStruct = { fg = random },
+		-- CmpItemKindText = { fg = random },
+		-- CmpItemKindTypeParameter = { fg = random },
+		-- CmpItemKindUnit = { fg = random },
+		-- CmpItemKindValue = { fg = random },
+		-- CmpItemKindVariable = { fg = random },
 		NvimCmpGhostText = { fg = bright_bg2 }
 	}
 	return plugin_syntax
 end
 
-function InsertStatusColor(mode)
+function LineNrColor(mode)
 	if (mode == 'i') then
 	    vim.cmd'setlocal winhighlight=LineNr:LineNrInsert,LineNrAbove:LineNrInsert,LineNrBelow:LineNrInsert,CursorLineNr:CursorLineNrInsert'
-	elseif (mode == 'r' or mode == 'v') then
+	elseif (mode == 'R') then
 	    vim.cmd'setlocal winhighlight=LineNr:LineNrReplace,LineNrAbove:LineNrReplace,LineNrBelow:LineNrReplace,CursorLineNr:CursorLineNrReplace'
+	elseif (mode == 'v' or mode == 'V') then
+	    vim.cmd'setlocal winhighlight=LineNr:LineNrVisual,LineNrAbove:LineNrVisual,LineNrBelow:LineNrVisual,CursorLineNr:CursorLineNrVisual'
 	else
 	    vim.cmd'setlocal winhighlight='
 	end
@@ -779,8 +811,8 @@ local function colorscheme()
 	if vim.fn.exists("syntax_on") then vim.api.nvim_command("syntax reset") end
 	vim.g.colors_name = "glitter"
 	local syntax = load_syntax()
-	vim.api.nvim_command("autocmd InsertEnter,InsertChange * lua InsertStatusColor(vim.api.nvim_get_vvar('insertmode'))")
-	vim.api.nvim_command("autocmd InsertLeave * lua InsertStatusColor('n')")
+	vim.api.nvim_command("autocmd ModeChanged *:* lua LineNrColor(vim.api.nvim_get_mode().mode)")
+	-- vim.api.nvim_command("autocmd InsertLeave * lua InsertStatusColor('n')")
 	for group, color in pairs(syntax) do highlight(group, color) end
 	async_load_plugin:send()
 end
