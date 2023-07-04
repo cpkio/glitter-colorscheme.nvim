@@ -387,6 +387,30 @@ local function highlight(group, color)
 	vim.api.nvim_command("highlight " .. group .. " " .. style .. " " .. fg .. " " .. bg .. " " .. sp)
 end
 
+local none
+local underline
+local reverse
+local italic
+local default_fg
+local default_bg
+local darkest
+local bright_fg
+local bright_bg
+local bright_bg2
+local red
+local red_bright
+local blue
+local blue_bright
+local green
+local green_bright
+local purple
+local insert
+local replace
+local visual
+local gray
+local gray2
+local random
+
 local function load_syntax()
 	local syntax = {
 		Normal =			{fg = default_fg,				bg = default_bg},
@@ -394,7 +418,7 @@ local function load_syntax()
 		SignColumn =			{fg = default_fg,				bg = none},
 		FoldColumn =			{fg = default_fg,				bg = none},
 		VertSplit =			{fg = darkest,					bg = none},
-		FloatBorder =			{fg = default_fg,				bg = darkest},
+		FloatBorder =			{fg = bright_fg,				bg = bright_bg},
 		Folded =			{fg = bright_fg,				bg = none},
 		EndOfBuffer =			{fg = default_bg,				bg = none},
 		Search =			{fg = darkest,					bg = default_fg},
@@ -415,21 +439,21 @@ local function load_syntax()
 		DiffChange =			{fg = red,					bg = none},
 		DiffDelete =			{fg = red_bright,				bg = none},
 		DiffText =			{fg = blue,					bg = none},
-		-- Directory =			{fg = color_8,					bg = none},
+		Directory =			{fg = default_fg,					bg = none},
 		ErrorMsg =			{fg = darkest,					bg = red},
 		WarningMsg =			{fg = red,					bg = default_bg},
-		-- ModeMsg =			{fg = color_6,					bg = none},
+		ModeMsg =			{fg = default_fg,					bg = none},
 		MatchParen =			{fg = bright_fg},
 		NonText =			{fg = gray,					bg = default_bg	}, -- отвечает за символы конца строки
 		Whitespace =			{fg = gray					}, -- отвечает за показ непечатаемых символов (пробелов и прочих)
-		SpecialKey =			{fg = green_bright,				bg = bright_bg },
+		SpecialKey =			{fg = green_bright,				},
 		Pmenu =				{fg = default_fg,				bg = bright_bg},
 		PmenuSel =			{fg = bright_fg,				bg = gray},
 		PmenuSelBold =			{fg = bright_fg},
 		PmenuSbar =			{fg = gray},
 		PmenuThumb =			{fg = bright_fg,				bg = gray},
 		-- WildMenu =			{fg = color_10,					bg = color_5},
-		-- Question =			{fg = color_3},
+		Question =			{fg = green},
 		NormalFloat =			{fg = default_fg,				bg = bright_bg},
 		TabLine =			{fg = default_fg,				bg = gray },
 		TabLineFill =			{fg = bright_fg,				bg = darkest,					style = none},
@@ -553,14 +577,14 @@ local function load_plugin_syntax()
 		-- TSWarning
 		statusOuter =			{ fg = darkest,					bg = gray },
 		statusMiddle =			{ fg = green,					bg = bright_bg2 },
-		statusInner =			{ fg = default_fg,				bg = bright_bg },
+		statusInner =			{ fg = default_fg,				bg = none },
 		statusInsert =			{ fg = darkest,					bg = insert},
 		statusReplace =			{ fg = darkest,					bg = replace},
 		statusVisual =			{ fg = darkest,					bg = visual},
-		statusInactive =		{ fg = gray,					bg = bright_bg },
-		statusCommand =			{ fg = darkest,					bg = bright_fg },
+		statusInactive =		{ fg = gray,					},
+		statusCommand =			{ fg = darkest,					bg = bright_fg},
 		statusChanged =			{ fg = bright_fg,				bg = red },
-		statusFileType =		{ fg = bright_fg,				bg = bright_bg },
+		statusFileType =		{ fg = bright_fg,				},
 
 		LineNrInsert =			{fg = insert},
 		CursorLineNrInsert =		{fg = darkest,					bg = insert},
@@ -575,10 +599,10 @@ local function load_plugin_syntax()
 		IndentBlanklineSpaceChar =	{													style = {{"nocombine", "nocombine"}} },
 		IndentBlanklineSpaceCharBlankline = {													style = {{"nocombine", "nocombine"}} },
 
-		DiagnosticHint =	{ fg = gray, bg = bright_bg },
-		DiagnosticError =	{ fg = red, bg = bright_bg },
-		DiagnosticWarning =	{ fg = green, bg = bright_bg },
-		DiagnosticInformation = { fg = blue, bg = bright_bg },
+		DiagnosticHint =	{ fg = gray, bg = none },
+		DiagnosticError =	{ fg = red, bg = none },
+		DiagnosticWarning =	{ fg = green, bg = none },
+		DiagnosticInformation = { fg = blue, bg = none },
 		DiagnosticVirtualtextHint =	{ fg = gray2, bg = none },
 		DiagnosticVirtualtextError =	{ fg = red, bg = none },
 		DiagnosticVirtualtextWarning =	{ fg = green, bg = none },
@@ -752,6 +776,7 @@ local function load_plugin_syntax()
 		-- FloatermBorder = {fg = color_1},
 		VimwikiItalic = { fg = red_bright },
 		VimwikiBold = { fg = green_bright },
+		VimwikiLink = { fg = blue, style = reverse },
 		-- эти расцветки не использовать, потому что с имеющимися
 		-- иконками эти иконки обрезаются из-за перемены цвета
 		-- CmpItemKind = { fg = random },
