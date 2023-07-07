@@ -419,6 +419,7 @@ local function load_syntax()
 		FoldColumn =			{fg = default_fg,				bg = none},
 		VertSplit =			{fg = darkest,					bg = none},
 		FloatBorder =			{fg = bright_fg,				bg = bright_bg},
+		FloatTitle =			{fg = green_bright,				bg = bright_bg},
 		Folded =			{fg = bright_fg,				bg = none},
 		EndOfBuffer =			{fg = default_bg,				bg = none},
 		Search =			{fg = darkest,					bg = default_fg},
