@@ -700,6 +700,9 @@ local function load_plugin_syntax()
 		-- asciidocTriplePlusPassthrough
 		-- asciidocTwoLineTitle
 		-- asciidocURL
+		['@text.strong'] = { fg = blue},
+		['@text.emphasis'] = { fg = green },
+		['@text.quote'] = { fg = gray },
 		-- rcAttribute
 		rcCaptionParam =	{ fg = green	},
 		-- rcCharacter
