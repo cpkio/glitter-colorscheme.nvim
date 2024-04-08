@@ -576,16 +576,16 @@ local function load_plugin_syntax()
 		TSVariable =			{ fg = blue,											style = none },
 		TSVariableBuiltin =		{ fg = blue,												style = none },
 		-- TSWarning
-		statusOuter =			{ fg = darkest,					bg = gray },
-		statusMiddle =			{ fg = green,					bg = bright_bg2 },
+		statusOuter =			{ fg = default_bg,				bg = bright_bg2 },
+		statusMiddle =			{ fg = green,					bg = bright_bg },
 		statusInner =			{ fg = default_fg,				bg = none },
-		statusInsert =			{ fg = darkest,					bg = insert},
-		statusReplace =			{ fg = darkest,					bg = replace},
-		statusVisual =			{ fg = darkest,					bg = visual},
+		statusInsert =			{ fg = default_bg,				bg = insert},
+		statusReplace =			{ fg = default_bg,				bg = replace},
+		statusVisual =			{ fg = default_bg,				bg = visual},
 		statusInactive =		{ fg = gray,					},
 		statusCommand =			{ fg = darkest,					bg = bright_fg},
 		statusChanged =			{ fg = bright_fg,				bg = red },
-		statusFileType =		{ fg = bright_fg,				},
+		statusFileType =		{ fg = default_fg,				},
 
 		LineNrInsert =			{fg = insert},
 		CursorLineNrInsert =		{fg = darkest,					bg = insert},
@@ -633,7 +633,7 @@ local function load_plugin_syntax()
 		-- LspDiagnosticsVirtualTextHint
 		-- LspDiagnosticsVirtualTextInformation
 		-- LspDiagnosticsVirtualTextWarning
-		MarkSignHL = { fg = purple },
+		MarkSignHL = { fg = bright_fg },
 		MarkSignNumHL = { fg = none, bg = none},
 		MarkVirtTextHL = { fg = gray },
 		-- asciidocAdmonition
@@ -853,9 +853,9 @@ local function setup(pal)
 
 	purple = filter('Purple', palette, {hue, 300})
 
-	insert = filter('INSERT Mode Color', blue)
+	insert = filter('INSERT Mode Color', blue_bright)
 	replace = filter('REPLACE Mode Color', red)
-	visual = filter('VISUAL Mode Color', green)
+	visual = filter('VISUAL Mode Color', green_bright)
 
 	gray = filter('Gray', palette, {sort_by_saturation}, {pop, 5}, {sort_by_lightness}, {pop_back, 2}, {pop})
 	gray2 = filter('Gray2', palette, {sort_by_saturation}, {pop, 5}, {sort_by_lightness}, {pop_back, 3}, {pop})
