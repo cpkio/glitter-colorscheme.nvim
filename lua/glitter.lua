@@ -813,6 +813,7 @@ local function colorscheme()
 	vim.g.colors_name = "glitter"
 	local syntax = load_syntax()
 	vim.api.nvim_command("autocmd ModeChanged *:* lua LineNrColor(vim.api.nvim_get_mode().mode)")
+	vim.api.nvim_command("autocmd WinEnter,WinLeave * lua LineNrColor(vim.api.nvim_get_mode().mode)")
 	-- vim.api.nvim_command("autocmd InsertLeave * lua InsertStatusColor('n')")
 	for group, color in pairs(syntax) do highlight(group, color) end
 	async_load_plugin:send()
