@@ -1,4 +1,4 @@
--- vim:noexpandtab:tabstop=8:shiftwidth=8
+-- vim:noexpandtab:tabstop=42:shiftwidth=42
 
 package.loaded["glitter"] = nil
 
@@ -413,218 +413,243 @@ local random
 
 local function load_syntax()
 	local syntax = {
-		Normal =			{fg = default_fg,				bg = default_bg},
-		Terminal =			{fg = default_fg,				bg = none},
-		SignColumn =			{fg = default_fg,				bg = none},
-		FoldColumn =			{fg = default_fg,				bg = none},
-		VertSplit =			{fg = darkest,					bg = none},
-		FloatBorder =			{fg = bright_fg,				bg = bright_bg},
-		FloatTitle =			{fg = green_bright,				bg = bright_bg},
-		Folded =			{fg = bright_fg,				bg = none},
-		EndOfBuffer =			{fg = default_bg,				bg = none},
-		Search =			{fg = darkest,					bg = default_fg},
-		IncSearch =			{fg = darkest,					bg = green},
-		ColorColumn =			{fg = none,					bg = bright_bg},
-		-- Conceal =			{fg = color_12,					bg = none},
-		-- Cursor =			{fg = none,					bg = none,					style = "reverse"},
-		-- vCursor =			{fg = none,					bg = none,					style = "reverse"},
-		-- iCursor =			{fg = none,					bg = none,					style = "reverse"},
-		-- lCursor =			{fg = none,					bg = none,					style = "reverse"},
-		-- CursorIM =			{fg = none,					bg = none,					style = "reverse"},
-		-- CursorColumn =		{fg = none,					bg = bg_highlight},
-		CursorLine =			{						bg = bright_bg,					style = none},
-		LineNr =			{fg = gray},
-		-- qfLineNr =			{fg = color_10},
-		CursorLineNr =			{fg = gray,											style = reverse},
-		DiffAdd =			{fg = green_bright,				bg = none},
-		DiffChange =			{fg = red,					bg = none},
-		DiffDelete =			{fg = red_bright,				bg = none},
-		DiffText =			{fg = blue,					bg = none},
-		Directory =			{fg = default_fg,					bg = none},
-		ErrorMsg =			{fg = darkest,					bg = red},
-		WarningMsg =			{fg = red,					bg = default_bg},
-		ModeMsg =			{fg = default_fg,					bg = none},
-		MatchParen =			{fg = bright_fg},
-		NonText =			{fg = gray,					bg = default_bg	}, -- отвечает за символы конца строки
-		Whitespace =			{fg = gray					}, -- отвечает за показ непечатаемых символов (пробелов и прочих)
-		SpecialKey =			{fg = green_bright,				},
-		Pmenu =				{fg = default_fg,				bg = bright_bg},
-		PmenuSel =			{fg = bright_fg,				bg = gray},
-		PmenuSelBold =			{fg = bright_fg},
-		PmenuSbar =			{fg = gray},
-		PmenuThumb =			{fg = bright_fg,				bg = gray},
-		-- WildMenu =			{fg = color_10,					bg = color_5},
-		Question =			{fg = green},
-		NormalFloat =			{fg = default_fg,				bg = bright_bg},
-		TabLine =			{fg = default_fg,				bg = gray },
-		TabLineFill =			{fg = bright_fg,				bg = darkest,					style = none},
-		TabLineSel =			{fg = bright_fg,				bg = default_bg,				style = none},
-		StatusLine =			{fg = default_fg,				bg = darkest,				style = none},
-		StatusLineNC =			{fg = gray,					bg = darkest,				style = none},
-		SpellBad =			{fg = red,					bg = none,				style = underline},
-		SpellCap =			{fg = purple,					bg = none,				style = underline},
-		SpellLocal =			{fg = red,					bg = none,				style = underline},
-		SpellRare =			{fg = blue,					bg = none,				style = underline},
-		Visual =			{fg = darkest,					bg = visual },
-		-- VisualNOS =			{fg = darkest,					bg = blue},
-		-- QuickFixLine =		{fg = color_9},
-		-- Debug =			{fg = color_2},
-		-- debugBreakpoint =		{fg = bg,						bg = color_0},
-		Boolean =			{ fg = random,											style = none },
-		Character =			{ fg = random,											style = none },
-		Comment =			{ fg = gray,											style = none },
-		Conditional =			{ fg = random,											style = none },
-		Constant =			{ fg = random,											style = none },
-		Define =			{ fg = random,											style = none },
-		Delimiter =			{ fg = bright_fg,										style = none },
-		Error =				{ fg = red,											style = none },
-		Exception =			{ fg = random,											style = none },
-		Float =				{ fg = random,											style = none },
-		Function =			{ fg = random,											style = none },
-		Identifier =			{ fg = random,											style = none },
-		Ignore =			{ fg = random,											style = none },
-		Include =			{ fg = random,											style = none },
-		Keyword =			{ fg = random,											style = italic },
-		Label =				{ fg = green,											style = none },
-		Macro =				{ fg = blue,											style = none },
-		Number =			{ fg = random,											style = none },
-		Operator =			{ fg = random,											style = none },
-		PreCondit =			{ fg = random,											style = none },
-		PreProc =			{ fg = random,											style = none },
-		Repeat =			{ fg = random,											style = none },
-		Special =			{ fg = purple,											style = none },
-		SpecialChar =			{ fg = random,											style = none },
-		SpecialComment =		{ fg = random,											style = none },
-		Statement =			{ fg = random,											style = none },
-		StorageClass =			{ fg = random,											style = none },
-		String =			{ fg = random,											style = none },
-		Structure =			{ fg = random,											style = none },
-		Tag =				{ fg = random,											style = none },
-		Title =				{ fg = bright_fg,										style = none },
-		Todo =				{ fg = random,											style = none },
-		Type =				{ fg = random,											style = none },
-		Typedef =			{ fg = random,											style = none },
-		Underlined =			{ fg = none,											style = underline},
+		Normal =	{ fg = default_fg,	bg = default_bg },
+		Terminal =	{ fg = default_fg,	bg = none },
+		SignColumn =	{ fg = default_fg,	bg = none },
+		FoldColumn =	{ fg = default_fg,	bg = none },
+		VertSplit =	{ fg = darkest,	bg = none },
+		FloatBorder =	{ fg = bright_fg,	bg = bright_bg },
+		FloatTitle =	{ fg = green_bright,	bg = bright_bg },
+		WinSeparator =	{ fg = darkest },
+		Folded =	{ fg = default_fg,	bg = none },
+		EndOfBuffer =	{ fg = default_bg,	bg = none },
+		Search =	{ fg = darkest,	bg = default_fg },
+		IncSearch =	{ fg = darkest,	bg = green },
+		ColorColumn =	{ fg = none,	bg = bright_bg },
+		-- Conceal =	{ fg = color_12,	bg = none },
+		-- Cursor =	{ fg = none,	bg = none,	style = "reverse"},
+		-- vCursor =	{ fg = none,	bg = none,	style = "reverse"},
+		-- iCursor =	{ fg = none,	bg = none,	style = "reverse"},
+		-- lCursor =	{ fg = none,	bg = none,	style = "reverse"},
+		-- CursorIM =	{ fg = none,	bg = none,	style = "reverse"},
+		-- CursorColumn =	 fg = none,	bg = bg_highlight },
+		CursorLine =	{	bg = bright_bg,	style = none },
+		LineNr =	{ fg = gray },
+		-- qfLineNr =	{ fg = color_10},
+		CursorLineNr =	{ fg = gray,		style = reverse },
+		DiffAdd =	{ fg = green_bright,	bg = none },
+		DiffChange =	{ fg = red,	bg = none },
+		DiffDelete =	{ fg = red_bright,	bg = none },
+		DiffText =	{ fg = blue,	bg = none },
+		Directory =	{ fg = default_fg,	bg = none },
+		ErrorMsg =	{ fg = darkest,	bg = red },
+		WarningMsg =	{ fg = red,	bg = default_bg },
+		ModeMsg =	{ fg = default_fg,	bg = none },
+		MatchParen =	{ fg = bright_fg },
+		NonText =	{ fg = gray,	bg = default_bg }, -- отвечает за символы конца строки
+		Whitespace =	{ fg = gray	}, -- отвечает за показ непечатаемых символов (пробелов и прочих)
+		SpecialKey =	{ fg = green_bright,	},
+		Pmenu =	{ fg = default_fg,	bg = bright_bg },
+		PmenuSel =	{ fg = bright_fg,	bg = gray },
+		PmenuSelBold =	{ fg = bright_fg },
+		PmenuSbar =	{ fg = gray },
+		PmenuThumb =	{ fg = bright_fg,	bg = gray },
+		-- WildMenu =	{ fg = color_10,	bg = color_5},
+		Question =	{ fg = green },
+		NormalFloat =	{ fg = default_fg,	bg = bright_bg },
+		TabLine =	{ fg = default_fg,	bg = gray },
+		TabLineFill =	{ fg = bright_fg,	bg = darkest,	style = none },
+		TabLineSel =	{ fg = bright_fg,	bg = default_bg,	style = none },
+		StatusLine =	{ fg = default_fg,	bg = darkest,	style = none },
+		StatusLineNC =	{ fg = gray,	bg = darkest,	style = none },
+		SpellBad =	{ fg = red,	bg = none,	style = underline },
+		SpellCap =	{ fg = purple,	bg = none,	style = underline },
+		SpellLocal =	{ fg = red,	bg = none,	style = underline },
+		SpellRare =	{ fg = blue,	bg = none,	style = none },
+		Visual =	{ fg = darkest,	bg = visual },
+		-- VisualNOS =	{ fg = darkest,	bg = blue },
+		-- QuickFixLine =	{ fg = color_9},
+		-- Debug =	{ fg = color_2},
+		-- debugBreakpoint =	{ fg = bg,	bg = color_0},
+		Boolean =	{ fg = random,		style = none },
+		Character =	{ fg = random,		style = none },
+		Comment =	{ fg = gray,		style = none },
+		Conditional =	{ fg = random,		style = none },
+		Constant =	{ fg = random,		style = none },
+		Define =	{ fg = random,		style = none },
+		Delimiter =	{ fg = bright_fg,		style = none },
+		Error =	{ fg = red,		style = none },
+		Exception =	{ fg = random,		style = none },
+		Float =	{ fg = random,		style = none },
+		Function =	{ fg = random,		style = none },
+		Identifier =	{ fg = random,		style = none },
+		Ignore =	{ fg = random,		style = none },
+		Include =	{ fg = random,		style = none },
+		Keyword =	{ fg = random,		style = italic },
+		Label =	{ fg = green,		style = none },
+		Macro =	{ fg = blue,		style = none },
+		Number =	{ fg = random,		style = none },
+		Operator =	{ fg = random,		style = none },
+		PreCondit =	{ fg = random,		style = none },
+		PreProc =	{ fg = random,		style = none },
+		Repeat =	{ fg = random,		style = none },
+		Special =	{ fg = purple,		style = none },
+		SpecialChar =	{ fg = random,		style = none },
+		SpecialComment =	{ fg = random,		style = none },
+		Statement =	{ fg = random,		style = none },
+		StorageClass =	{ fg = random,		style = none },
+		String =	{ fg = random,		style = none },
+		Structure =	{ fg = random,		style = none },
+		Tag =	{ fg = random,		style = none },
+		Title =	{ fg = bright_fg,		style = none },
+		Todo =	{ fg = random,		style = none },
+		Type =	{ fg = random,		style = none },
+		Typedef =	{ fg = random,		style = none },
+		Underlined =	{ fg = none,		style = underline },
 	}
 	return syntax
 end
 
 local function load_plugin_syntax()
 	local plugin_syntax = {
-		TSAnnotation =			{ fg = random,											style = none },
-		TSAttribute =			{ fg = random,											style = none },
-		TSBoolean =			{ fg = random,											style = none },
-		TSCharacter =			{ fg = random,											style = none },
+		TSAnnotation =	{ fg = random,		style = none },
+		TSAttribute =	{ fg = random,		style = none },
+		TSBoolean =	{ fg = random,		style = none },
+		TSCharacter =	{ fg = random,		style = none },
 		-- TSComment
-		TSConditional =			{ fg = random,											style = none },
-		TSConstant =			{ fg = random,											style = none },
+		TSConditional =	{ fg = random,		style = none },
+		TSConstant =	{ fg = random,		style = none },
 		-- TSConstBuiltin xxx links to Special
 		-- TSConstMacro   xxx links to Define
-		TSConstructor =			{ fg = random,											style = none },
+		TSConstructor =	{ fg = random,		style = none },
 		-- TSDanger
-		TSEmphasis =			{ fg = green,											style = none },
+		TSEmphasis =	{ fg = green,		style = none },
 		-- TSEnvironment
 		-- TSEnvironmentName
-		TSError =			{ fg = random,											style = none },
-		TSException =			{ fg = random,											style = none },
-		TSField =			{ fg = random,											style = none },
-		TSFloat =			{ fg = random,											style = none },
-		TSFuncBuiltin =			{ fg = random,											style = none },
-		TSFuncMacro =			{ fg = random,											style = none },
-		TSFunction =			{ fg = red,											style = none },
-		TSInclude =			{ fg = random,											style = none },
-		TSKeyword =			{ fg = random,											style = italic },
-		TSKeywordFunction =		{ fg = random,											style = italic },
+		TSError =	{ fg = random,		style = none },
+		TSException =	{ fg = random,		style = none },
+		TSField =	{ fg = random,		style = none },
+		TSFloat =	{ fg = random,		style = none },
+		TSFuncBuiltin =	{ fg = random,		style = none },
+		TSFuncMacro =	{ fg = random,		style = none },
+		TSFunction =	{ fg = red,		style = none },
+		TSInclude =	{ fg = random,		style = none },
+		TSKeyword =	{ fg = random,		style = italic },
+		TSKeywordFunction =	{ fg = random,		style = italic },
 		-- TSKeywordOperator
 		-- TSKeywordReturn
-		TSLabel =			{ fg = random,											style = none },
-		TSLiteral =			{ fg = green,											style = none },
+		TSLabel =	{ fg = random,		style = none },
+		TSLiteral =	{ fg = green,		style = none },
 		-- TSMath
-		TSMethod =			{ fg = random,											style = none },
-		TSNamespace =			{ fg = random,											style = none },
+		TSMethod =	{ fg = random,		style = none },
+		TSNamespace =	{ fg = random,		style = none },
 		-- TSNone
 		-- TSNote
-		TSNumber =			{ fg = blue,											style = none },
-		TSOperator =			{ fg = bright_fg,										style = none },
-		TSParameter =			{ fg = random,											style = none },
-		TSParameterReference =		{ fg = random,											style = none },
-		TSProperty =			{ fg = random,											style = none },
-		TSPunctBracket =		{ fg = random,											style = none },
-		TSPunctDelimiter =		{ fg = random,											style = none },
+		TSNumber =	{ fg = blue,		style = none },
+		TSOperator =	{ fg = bright_fg,		style = none },
+		TSParameter =	{ fg = random,		style = none },
+		TSParameterReference =	{ fg = random,		style = none },
+		TSProperty =	{ fg = random,		style = none },
+		TSPunctBracket =	{ fg = random,		style = none },
+		TSPunctDelimiter =	{ fg = random,		style = none },
 		-- TSPunctSpecial оформляет в том числе строку символов заголовка в RST
 		-- поэтому делаем его идентичным TSTitle
-		TSPunctSpecial =		{ fg = bright_fg,										style = none },
-		TSRepeat =			{ fg = random,											style = none },
+		TSPunctSpecial =	{ fg = bright_fg,		style = none },
+		TSRepeat =	{ fg = random,		style = none },
 		-- TSStrike
-		TSString =			{ fg = green,											style = none },
-		TSStringEscape =		{ fg = red,											style = none },
-		TSStringRegex =			{ fg = blue,											style = none },
+		TSString =	{ fg = green,		style = none },
+		TSStringEscape =	{ fg = red,		style = none },
+		TSStringRegex =	{ fg = blue,		style = none },
 		-- TSStringSpecial
-		TSStrong =			{ fg = green_bright,										style = none },
-		TSStructure =			{ fg = random,											style = none },
+		TSStrong =	{ fg = green_bright,		style = none },
+		TSStructure =	{ fg = random,		style = none },
 		-- TSSymbol
-		TSTag =				{ fg = random,											style = none },
+		TSTag =	{ fg = random,		style = none },
 		-- TSTagAttribute
-		TSTagDelimiter =		{ fg = bright_fg,										style = none },
-		TSText =			{ fg = default_fg,										style = none },
-		TSTextReference =		{ fg = red,											style = none },
-		TSTitle =			{ fg = bright_fg,										style = none },
-		TSType =			{ fg = random,											style = none },
-		TSTypeBuiltin =			{ fg = random,											style = none },
-		TSURI =				{ fg = blue,											style = none },
-		TSUnderline =			{ fg = none,											style = underline },
-		TSVariable =			{ fg = blue,											style = none },
-		TSVariableBuiltin =		{ fg = blue,												style = none },
+		TSTagDelimiter =	{ fg = bright_fg,		style = none },
+		TSText =	{ fg = default_fg,		style = none },
+		TSTextReference =	{ fg = red,		style = none },
+		TSTitle =	{ fg = bright_fg,		style = none },
+		TSType =	{ fg = random,		style = none },
+		TSTypeBuiltin =	{ fg = random,		style = none },
+		TSURI =	{ fg = blue,		style = none },
+		TSUnderline =	{ fg = none,		style = underline },
+		TSVariable =	{ fg = blue,		style = none },
+		TSVariableBuiltin =	{ fg = blue,		style = none },
 		-- TSWarning
-		statusOuter =			{ fg = default_bg,				bg = bright_bg2 },
-		statusMiddle =			{ fg = green,					bg = bright_bg },
-		statusInner =			{ fg = default_fg,				bg = none },
-		statusInsert =			{ fg = default_bg,				bg = insert},
-		statusReplace =			{ fg = default_bg,				bg = replace},
-		statusVisual =			{ fg = default_bg,				bg = visual},
-		statusInactive =		{ fg = gray,					},
-		statusCommand =			{ fg = darkest,					bg = bright_fg},
-		statusChanged =			{ fg = bright_fg,				bg = red },
-		statusFileType =		{ fg = default_fg,				},
+		TreesitterContextSeparator =	{ fg = bright_fg,	bg = none },
+		TreesitterContext =	{	bg = none },
+		TreesitterContextBottom =	{	bg = none },
+		TreesitterContextLineNumber =	{ fg = gray },
+		TreesitterContextLineNumberBottom =	{ fg = gray },
 
-		LineNrInsert =			{fg = insert},
-		CursorLineNrInsert =		{fg = darkest,					bg = insert},
-		LineNrReplace =			{fg = replace},
-		CursorLineNrReplace =		{fg = darkest,					bg = replace},
-		LineNrVisual =			{fg = visual},
-		CursorLineNrVisual =		{fg = darkest,					bg = visual},
+		statusOuter =	{ fg = default_bg,	bg = bright_bg2 },
+		statusMiddle =	{ fg = green,	bg = bright_bg },
+		statusInner =	{ fg = default_fg,	bg = none },
+		statusInsert =	{ fg = default_bg,	bg = insert },
+		statusReplace =	{ fg = default_bg,	bg = replace },
+		statusVisual =	{ fg = default_bg,	bg = visual },
+		statusInactive =	{ fg = gray,	},
+		statusCommand =	{ fg = darkest,	bg = bright_fg },
+		statusChanged =	{ fg = bright_fg,	bg = red },
+		statusFileType =	{ fg = default_fg,	},
 
-		IndentBlanklineChar =		{ fg = gray2,											style = {{"nocombine", "nocombine"}}},
-		IndentBlanklineContextChar =	{ fg = bright_fg,											style = {{"nocombine", "nocombine"}} },
-		IndentBlanklineContextStart =	{ fg = bright_fg,											style = {{"nocombine", "nocombine"}} },
-		IndentBlanklineSpaceChar =	{													style = {{"nocombine", "nocombine"}} },
-		IndentBlanklineSpaceCharBlankline = {													style = {{"nocombine", "nocombine"}} },
+		LineNrInsert =	{ fg = insert },
+		CursorLineNrInsert =	{ fg = darkest,	bg = insert },
+		LineNrReplace =	{ fg = replace },
+		CursorLineNrReplace =	{ fg = darkest,	bg = replace },
+		LineNrVisual =	{ fg = visual },
+		CursorLineNrVisual =	{ fg = darkest,	bg = visual },
 
-		DiagnosticHint =	{ fg = gray, bg = none },
-		DiagnosticError =	{ fg = red, bg = none },
-		DiagnosticWarning =	{ fg = green, bg = none },
-		DiagnosticInformation = { fg = blue, bg = none },
-		DiagnosticVirtualtextHint =	{ fg = gray2, bg = none },
-		DiagnosticVirtualtextError =	{ fg = red, bg = none },
-		DiagnosticVirtualtextWarning =	{ fg = green, bg = none },
-		DiagnosticVirtualtextInformation = { fg = blue, bg = none },
-		DiagnosticSignHint =	{ fg = gray2, bg = none },
-		DiagnosticSignError =	{ fg = red, bg = none },
-		DiagnosticSignWarning =	{ fg = green, bg = none },
-		DiagnosticSignInformation = { fg = blue, bg = none },
+		IndentBlanklineChar =	{ fg = gray2,		style = {{"nocombine", "nocombine"}}},
+		IndentBlanklineContextChar =	{ fg = bright_fg,		style = {{"nocombine", "nocombine"}} },
+		IndentBlanklineContextStart =	{ fg = bright_fg,		style = {{"nocombine", "nocombine"}} },
+		IndentBlanklineSpaceChar =	{		style = {{"nocombine", "nocombine"}} },
+		IndentBlanklineSpaceCharBlankline =	{		style = {{"nocombine", "nocombine"}} },
 
-		LspDiagnosticsDefaultHint =	{ fg = gray2 },
-		LspDiagnosticsDefaultError =	{ fg = red },
-		LspDiagnosticsDefaultWarning =	{ fg = green },
-		LspDiagnosticsDefaultInformation = { fg = blue},
-		LspDiagnosticsUnderlineError =	{													style = reverse },
-		LspDiagnosticsUnderlineWarning = { fg = red,											style = underline },
-		LspDiagnosticsUnderlineInformation = {													style = underline },
-		LspDiagnosticsUnderlineHint =	 {													style = underline },
-		LspDiagnosticsFloatingError =	{ fg = bright_fg,				},
-		LspDiagnosticsFloatingHint =	{ fg = bright_fg,				},
-		LspDiagnosticsFloatingInformation =	{ fg = bright_fg,			},
-		LspDiagnosticsFloatingWarning =	{ fg = bright_fg,				},
+
+		DiagnosticDeprecated =	{ fg = gray2 },	-- Used for deprecated or obsolete code.
+		DiagnosticUnnecessary =	{ fg = gray2 },	-- Used for unnecessary or unused code.
+		DiagnosticHint =	{ fg = gray,	bg = none },	-- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
+		DiagnosticInfo =	{ fg = blue,	bg = none },	-- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
+		DiagnosticWarn =	{ fg = green,	bg = none },	-- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
+		DiagnosticError =	{ fg = red,	bg = none },	-- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
+		DiagnosticOk =	{ fg = bright_fg,	bg = none },	-- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
+		DiagnosticFloatingHint =	{ fg = gray,	bg = none },	-- Used to color "Hint" diagnostic messages in diagnostics float.
+		DiagnosticFloatingInfo =	{ fg = blue,	bg = none },	-- Used to color "Info" diagnostic messages in diagnostics float.
+		DiagnosticFloatingWarn =	{ fg = green,	bg = none },	-- Used to color "Warn" diagnostic messages in diagnostics float.
+		DiagnosticFloatingError =	{ fg = red,	bg = none },	-- Used to color "Error" diagnostic messages in diagnostics float. See vim.diagnostic.open_float()
+		DiagnosticFloatingOk =	{ fg = bright_fg,	bg = none },	-- Used to color "Ok" diagnostic messages in diagnostics float.
+		DiagnosticSignHint =	{ fg = gray,	bg = none },	-- Used for "Hint" signs in sign column.
+		DiagnosticSignInfo =	{ fg = blue,	bg = none },	-- Used for "Info" signs in sign column.
+		DiagnosticSignWarn =	{ fg = green,	bg = none },	-- Used for "Warn" signs in sign column.
+		DiagnosticSignError =	{ fg = red,	bg = none },	-- Used for "Error" signs in sign column.
+		DiagnosticSignOk =	{ fg = bright_fg,	bg = none },	-- Used for "Ok" signs in sign column.
+		-- DiagnosticUnderlineHint =	{},	-- Used to underline "Hint" diagnostics.
+		-- DiagnosticUnderlineInfo =	{},	-- Used to underline "Info" diagnostics.
+		-- DiagnosticUnderlineWarn =	{},	-- Used to underline "Warn" diagnostics.
+		-- DiagnosticUnderlineError =	{},	-- Used to underline "Error" diagnostics.
+		-- DiagnosticUnderlineOk =	{},	-- Used to underline "Ok" diagnostics.
+		DiagnosticVirtualtextHint =	{ fg = gray,	bg = none }, -- Used for "Hint" diagnostic virtual text.
+		DiagnosticVirtualtextInfo =	{ fg = blue,	bg = none }, -- Used for "Info" diagnostic virtual text.
+		DiagnosticVirtualtextWarn =	{ fg = green,	bg = none }, -- Used for "Warn" diagnostic virtual text.
+		DiagnosticVirtualtextError =	{ fg = red,	bg = none }, -- Used for "Error" diagnostic virtual text.
+		DiagnosticVirtualTextOk =	{ fg = bright_fg,	bg = none }, -- Used for "Ok" diagnostic virtual text.
+
+
+
+		-- LspDiagnosticsDefaultHint =	{ fg = gray2 },
+		-- LspDiagnosticsDefaultError =	{ fg = red },
+		-- LspDiagnosticsDefaultWarning =	{ fg = green },
+		-- LspDiagnosticsDefaultInformation =	{ fg = blue },
+		-- LspDiagnosticsUnderlineError =	{		style = reverse },
+		-- LspDiagnosticsUnderlineWarning =	{ fg = red,		style = underline },
+		-- LspDiagnosticsUnderlineInformation =	{		style = underline },
+		-- LspDiagnosticsUnderlineHint =	{		style = underline },
+		-- LspDiagnosticsFloatingError =	{ fg = bright_fg,		},
+		-- LspDiagnosticsFloatingHint =	{ fg = bright_fg,		},
+		-- LspDiagnosticsFloatingInformation =	{ fg = bright_fg,		},
+		-- LspDiagnosticsFloatingWarning =	{ fg = bright_fg,		},
 		-- LspDiagnosticsSignError
 		-- LspDiagnosticsSignHint
 		-- LspDiagnosticsSignInformation
@@ -633,9 +658,9 @@ local function load_plugin_syntax()
 		-- LspDiagnosticsVirtualTextHint
 		-- LspDiagnosticsVirtualTextInformation
 		-- LspDiagnosticsVirtualTextWarning
-		MarkSignHL = { fg = bright_fg },
-		MarkSignNumHL = { fg = none, bg = none},
-		MarkVirtTextHL = { fg = gray },
+		MarkSignHL =	{ fg = bright_fg },
+		MarkSignNumHL =	{ fg = none,	bg = none },
+		MarkVirtTextHL =	{ fg = gray },
 		-- asciidocAdmonition
 		-- asciidocAnchorMacro
 		-- asciidocAttributeEntry
@@ -676,7 +701,7 @@ local function load_plugin_syntax()
 		-- asciidocQuotedDoubleQuoted
 		-- asciidocQuotedEmphasized
 		-- asciidocQuotedEmphasized2
-		asciidocQuotedEmphasizedItalic = { fg = bright_fg},
+		asciidocQuotedEmphasizedItalic =	{ fg = bright_fg },
 		-- asciidocQuotedMonospaced
 		-- asciidocQuotedMonospaced2
 		-- asciidocQuotedSingleQuoted
@@ -700,88 +725,144 @@ local function load_plugin_syntax()
 		-- asciidocTriplePlusPassthrough
 		-- asciidocTwoLineTitle
 		-- asciidocURL
-		['@text.strong'] = { fg = blue},
-		['@text.emphasis'] = { fg = green },
-		['@text.quote'] = { fg = gray },
+		['@comment'] =	{ fg = gray2 },
+		['@comment.documentation'] =	{ fg = gray },
+		['@error'] =	{ fg = darkest,	bg = red,	style = none },
+		['@preproc'] =	{ fg = gray },
+		['@define'] =	{},
+		['@operator'] =	{},
+		['@punctuation.delimiter'] =	{},
+		['@punctuation.bracket'] =	{},
+		['@punctuation.special'] =	{},
+		['@number'] =	{ fg = green_bright,		style = reverse },
+		['@string'] =	{ fg = green_bright },
+		['@string.documentation'] =	{ fg = green },
+		['@string.regex'] =	{ fg = red },
+		['@string.escape'] =	{ fg = red_bright },
+		['@string.special'] =	{ fg = blue },
+		['@character'] =	{ fg = purple },
+		['@character.special'] =	{},
+		['@parameter'] =	{ fg = blue_bright },
+		['@keyword'] =	{},
+		['@conditional'] =	{ fg = gray },
+		['@label'] =	{ fg = blue },
+		['@label.note'] =	{ fg = gray,		style = reverse },
+		['@label.tip'] =	{ fg = blue_bright,		style = reverse },
+		['@label.important'] =	{ fg = green_bright,		style = reverse },
+		['@label.caution'] =	{ fg = purple,		style = reverse },
+		['@label.warning'] =	{ fg = red_bright,		style = reverse },
+		['@include'] =	{ fg = green },
+		['@attribute'] =	{ fg = green },
+		['@variable'] =	{ fg = purple },
+		['@variable.builtin'] =	{},
+		['@constant'] =	{},
+		['@constant.builtin'] =	{},
+		['@constant.macro'] =	{},
+		['@text'] =	{ fg = default_fg },
+		['@text.strong'] =	{ fg = blue },
+		['@text.emphasis'] =	{ fg = green },
+		-- ['@text.underline'] =	{},
+		-- ['@text.strike'] =	{},
+		['@text.highlight'] =	{ fg = darkest,	bg = green_bright },
+		['@markup.heading'] =	{ fg = bright_fg },
+		['@markup.heading.0'] =	{ fg = bright_fg },
+		['@markup.heading.1'] =	{ fg = bright_fg },
+		['@markup.heading.2'] =	{ fg = bright_fg },
+		['@markup.heading.3'] =	{ fg = bright_fg },
+		['@markup.heading.4'] =	{ fg = bright_fg },
+		['@markup.heading.5'] =	{ fg = bright_fg },
+		['@text.title'] =	{ fg = bright_fg },
+		['@text.quote'] =	{ fg = gray },
+		['@text.uri'] =	{},
+		['@text.math'] =	{},
+		['@text.environment'] =	{},
+		['@text.environment.name'] =	{},
+		['@text.reference'] =	{ fg = purple },
+		['@text.literal'] =	{ fg = red },
+		['@text.literal.block'] =	{ fg = gray },
+		['@text.todo'] =	{},
+		['@text.note'] =	{},
+		['@text.warning'] =	{},
+		['@text.danger'] =	{},
 		-- rcAttribute
-		rcCaptionParam =	{ fg = green	},
+		rcCaptionParam =	{ fg = green },
 		-- rcCharacter
 		-- rcComment
 		-- rcComment2String
 		-- rcCommentError
 		-- rcCommentSkip
 		-- rcCommentString
-		rcCommonAttribute =	{ fg = red	},
+		rcCommonAttribute =	{ fg = red },
 		-- rcDefine
 		-- rcError
 		-- rcFloat
 		-- rcInParen
 		-- rcInclude
 		-- rcIncluded
-		rcLanguage =	{ fg = red,					style = reverse},
-		rcMainObject =	{ fg = default_fg	},
+		rcLanguage =	{ fg = red,		style = reverse },
+		rcMainObject =	{ fg = default_fg },
 		-- rcNumber
 		-- rcOctalError
-		rcParam =	{ fg = green_bright	},
+		rcParam =	{ fg = green_bright },
 		-- rcParen
 		-- rcParenError
 		-- rcPreCondit
 		-- rcPreProc
 		-- rcSpecial
 		-- rcSpecialCharacter
-		rcStatement =	{ fg = blue		},
+		rcStatement =	{ fg = blue },
 		-- rcStdId
 		-- rcString
-		rcSubObject = { fg = bright_fg		},
+		rcSubObject =	{ fg = bright_fg },
 		-- rcTodo
-		-- GitGutterAdd = {fg = color_add},
-		-- GitGutterChange = {fg = color_change},
-		-- GitGutterDelete = {fg = color_delete},
-		-- GitGutterChangeDelete = {fg = color_change_delete},
-		-- GitSignsAdd = {fg = color_add},
-		-- GitSignsChange = {fg = color_change},
-		-- GitSignsDelete = {fg = color_delete},
-		-- GitSignsAddNr = {fg = color_add},
-		-- GitSignsChangeNr = {fg = color_change},
-		-- GitSignsDeleteNr = {fg = color_delete},
-		-- GitSignsAddLn = {fg = color_add},
-		-- GitSignsChangeLn = {fg = color_change},
-		-- GitSignsDeleteLn = {fg = color_delete},
-		-- SignifySignAdd = {fg = color_add},
-		-- SignifySignChange = {fg = color_change},
-		-- SignifySignDelete = {fg = color_delete},
-		-- LvimHelperNormal = {fg = color_6, bg = base2},
-		-- LvimHelperTitle = {fg = color_9, bg = none},
-		-- NvimTreeNormal = {bg = black_background},
-		-- NvimTreeFolderName = {fg = color_4},
-		-- NvimTreeOpenedFolderName = {fg = color_11},
-		-- NvimTreeEmptyFolderName = {fg = color_4},
-		-- NvimTreeRootFolder = {fg = color_4},
-		-- NvimTreeSpecialFile = {fg = fg, bg = none, style = "NONE"},
-		-- NvimTreeFolderIcon = {fg = color_4},
-		-- NvimTreeIndentMarker = {fg = hl},
-		-- NvimTreeSignError = {fg = color_error},
-		-- NvimTreeSignWarning = {fg = color_warning},
-		-- NvimTreeSignInformation = {fg = color_info},
-		-- NvimTreeSignHint = {fg = color_info},
-		-- NvimTreeLspDiagnosticsError = {fg = color_error},
-		-- NvimTreeLspDiagnosticsWarning = {fg = color_warning},
-		-- NvimTreeLspDiagnosticsInformation = {fg = color_info},
-		-- NvimTreeLspDiagnosticsHint = {fg = color_info},
-		-- NvimTreeWindowPicker = { fg = bg, bg = color_9},
-		-- TroubleNormal = {bg = black_background},
-		-- TelescopeBorder = {fg = color_11},
-		-- TelescopePromptBorder = {fg = color_3},
-		-- TelescopeMatching = {fg = color_11},
-		-- TelescopeSelection = {fg = color_3, bg = bg_highlight},
-		-- TelescopeSelectionCaret = {fg = color_3},
-		-- TelescopeMultiSelection = {fg = color_11},
-		-- Floaterm = {fg = color_9},
-		-- FloatermBorder = {fg = color_1},
-		VimwikiItalic = { fg = red_bright },
-		VimwikiBold = { fg = green_bright },
-		VimwikiLink = { fg = blue, style = reverse },
-		NvimCmpGhostText = { fg = bright_bg2 }
+		-- GitGutterAdd =	{ fg = color_add },
+		-- GitGutterChange =	{ fg = color_change },
+		-- GitGutterDelete =	{ fg = color_delete },
+		-- GitGutterChangeDelete =	{ fg = color_change_delete },
+		-- GitSignsAdd =	{ fg = color_add },
+		-- GitSignsChange =	{ fg = color_change },
+		-- GitSignsDelete =	{ fg = color_delete },
+		-- GitSignsAddNr =	{ fg = color_add },
+		-- GitSignsChangeNr =	{ fg = color_change },
+		-- GitSignsDeleteNr =	{ fg = color_delete },
+		-- GitSignsAddLn =	{ fg = color_add },
+		-- GitSignsChangeLn =	{ fg = color_change },
+		-- GitSignsDeleteLn =	{ fg = color_delete },
+		-- SignifySignAdd =	{ fg = color_add },
+		-- SignifySignChange =	{ fg = color_change },
+		-- SignifySignDelete =	{ fg = color_delete },
+		-- LvimHelperNormal =	{ fg = color_6, bg = base2},
+		-- LvimHelperTitle =	{ fg = color_9, bg = none },
+		-- NvimTreeNormal =	{ bg = black_background },
+		-- NvimTreeFolderName =	{ fg = color_4},
+		-- NvimTreeOpenedFolderName =	{ fg = color_11},
+		-- NvimTreeEmptyFolderName =	{ fg = color_4},
+		-- NvimTreeRootFolder =	{ fg = color_4},
+		-- NvimTreeSpecialFile =	{ fg = fg, bg = none, style = "NONE"},
+		-- NvimTreeFolderIcon =	{ fg = color_4},
+		-- NvimTreeIndentMarker =	{ fg = hl },
+		-- NvimTreeSignError =	{ fg = color_error },
+		-- NvimTreeSignWarning =	{ fg = color_warning },
+		-- NvimTreeSignInformation =	{ fg = color_info },
+		-- NvimTreeSignHint =	{ fg = color_info },
+		-- NvimTreeLspDiagnosticsError =	{ fg = color_error },
+		-- NvimTreeLspDiagnosticsWarning =	{ fg = color_warning },
+		-- NvimTreeLspDiagnosticsInformation =	{ fg = color_info },
+		-- NvimTreeLspDiagnosticsHint =	{ fg = color_info },
+		-- NvimTreeWindowPicker =	{ fg = bg, bg = color_9},
+		-- TroubleNormal =	{ bg = black_background },
+		-- TelescopeBorder =	{ fg = color_11},
+		-- TelescopePromptBorder =	{ fg = color_3},
+		-- TelescopeMatching =	{ fg = color_11},
+		-- TelescopeSelection =	{ fg = color_3, bg = bg_highlight },
+		-- TelescopeSelectionCaret =	{ fg = color_3},
+		-- TelescopeMultiSelection =	{ fg = color_11},
+		-- Floaterm =	{ fg = color_9},
+		-- FloatermBorder =	{ fg = color_1},
+		VimwikiItalic =	{ fg = red_bright },
+		VimwikiBold =	{ fg = green_bright },
+		VimwikiLink =	{ fg = blue,		style = reverse },
+		NvimCmpGhostText =	{ fg = bright_bg2 }
 	}
 	return plugin_syntax
 end
@@ -794,7 +875,11 @@ function LineNrColor(mode)
 	elseif (mode == 'v' or mode == 'V') then
 	    vim.cmd'setlocal winhighlight=LineNr:LineNrVisual,LineNrAbove:LineNrVisual,LineNrBelow:LineNrVisual,CursorLineNr:CursorLineNrVisual'
 	else
-	    vim.cmd'setlocal winhighlight='
+	    if (vim.o.readonly) then
+	       vim.cmd'setlocal winhighlight=LineNr:CursorLineNrReplace,LineNrAbove:CursorLineNrReplace,LineNrBelow:CursorLineNrReplace,CursorLineNr:LineNrReplace'
+	    else
+	        vim.cmd'setlocal winhighlight='
+	    end
 	end
 end
 
@@ -834,34 +919,34 @@ local function setup(pal)
 	reverse = {{"reverse", "reverse"}}
 	italic = {{"italic", "italic"}}
 
-	default_fg = filter('Default Foreground', palette, {light}, {sort_by_lightness}, {pop_back, 2}, {pop})
-	default_bg = filter('Default Background', palette, {dark}, {sort_by_lightness}, {pop, 2}, {pop_back})
+	default_fg = filter('Default Foreground', palette, { light }, { sort_by_lightness }, { pop_back, 2}, { pop })
+	default_bg = filter('Default Background', palette, { dark }, { sort_by_lightness }, { pop, 2}, { pop_back })
 
-	darkest = filter('Darkest color', palette, {dark}, {sort_by_lightness}, {pop})
+	darkest = filter('Darkest color', palette, { dark }, { sort_by_lightness }, { pop })
 
-	bright_fg = filter('Bright Foreground', palette, {light}, {sort_by_lightness}, {pop_back})
-	bright_bg = filter('Bright Background', palette, {dark}, {sort_by_lightness}, {pop, 3}, {pop_back})
-	bright_bg2 = filter('Bright Background 2', palette, {dark}, {sort_by_lightness}, {pop, 4}, {pop_back})
+	bright_fg = filter('Bright Foreground', palette, { light }, { sort_by_lightness }, { pop_back })
+	bright_bg = filter('Bright Background', palette, { dark }, { sort_by_lightness }, { pop, 3}, { pop_back })
+	bright_bg2 = filter('Bright Background 2', palette, { dark }, { sort_by_lightness }, { pop, 4}, { pop_back })
 
-	red = filter('Reddish Colors', palette, {dark, 0.7}, {hue,0}, {sort_by_red}, {pop_back, 2}, {sort_by_lightness}, {pop})
-	red_bright = filter('Bright Red', palette, {dark, 0.7}, {hue,0}, {sort_by_red}, {pop_back, 2}, {sort_by_lightness}, {pop_back})
+	red = filter('Reddish Colors', palette, { dark, 0.7}, { hue,0}, { sort_by_red }, { pop_back, 2}, { sort_by_lightness }, { pop })
+	red_bright = filter('Bright Red', palette, { dark, 0.7}, { hue,0}, { sort_by_red }, { pop_back, 2}, { sort_by_lightness }, { pop_back })
 
-	blue = filter('Blueish Colors', palette, {dark, 0.7}, {hue,240,36}, {sort_by_blue}, {pop_back, 2}, {sort_by_lightness}, {pop})
-	blue_bright = filter('Bright Blue', palette, {dark, 0.7}, {hue,240,36}, {sort_by_blue}, {pop_back, 2}, {sort_by_lightness}, {pop_back})
+	blue = filter('Blueish Colors', palette, { dark, 0.7}, { hue,240,36}, { sort_by_blue }, { pop_back, 2}, { sort_by_lightness }, { pop })
+	blue_bright = filter('Bright Blue', palette, { dark, 0.7}, { hue,240,36}, { sort_by_blue }, { pop_back, 2}, { sort_by_lightness }, { pop_back })
 
-	green = filter('Greenish Colors', palette, {dark, 0.7}, {hue,120}, {sort_by_green}, {pop_back, 2}, {sort_by_lightness}, {pop})
-	green_bright = filter('Bright Green', palette, {dark, 0.7}, {hue,120}, {sort_by_green}, {pop_back, 2}, {sort_by_lightness}, {pop_back})
+	green = filter('Greenish Colors', palette, { dark, 0.7}, { hue,120}, { sort_by_green }, { pop_back, 2}, { sort_by_lightness }, { pop })
+	green_bright = filter('Bright Green', palette, { dark, 0.7}, { hue,120}, { sort_by_green }, { pop_back, 2}, { sort_by_lightness }, { pop_back })
 
-	purple = filter('Purple', palette, {hue, 300})
+	purple = filter('Purple', palette, { hue, 300})
 
 	insert = filter('INSERT Mode Color', blue_bright)
 	replace = filter('REPLACE Mode Color', red)
 	visual = filter('VISUAL Mode Color', green_bright)
 
-	gray = filter('Gray', palette, {sort_by_saturation}, {pop, 5}, {sort_by_lightness}, {pop_back, 2}, {pop})
-	gray2 = filter('Gray2', palette, {sort_by_saturation}, {pop, 5}, {sort_by_lightness}, {pop_back, 3}, {pop})
+	gray = filter('Gray', palette, { sort_by_saturation }, { pop, 5}, { sort_by_lightness }, { pop_back, 2}, { pop })
+	gray2 = filter('Gray2', palette, { sort_by_saturation }, { pop, 5}, { sort_by_lightness }, { pop_back, 3}, { pop })
 
-	random = filter('Random Colors Pool', palette, {colorful, 0.4}, {light, 0.5}, {dark, 0.7})
+	random = filter('Random Colors Pool', palette, { colorful, 0.4}, { light, 0.5}, { dark, 0.7})
 
 	colorscheme()
 
