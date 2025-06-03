@@ -26,7 +26,7 @@ end
 local mt = {
 	-- `+` is for color sets intersection
 	__add = function(a,b)
-		res = {}; setmetatable(res, mt)
+		local res = {}; setmetatable(res, mt)
 		for j, v2 in ipairs(b) do
 			for i, v1 in ipairs(a) do
 				if a[i][2] == b[j][2] then
@@ -39,8 +39,8 @@ local mt = {
 
 	-- `-` removes intersections and joins the remaining
 	__sub = function(a,b)
-		l = clone(a)
-		r = clone(b)
+		local l = clone(a)
+		local r = clone(b)
 		::restart::
 		for j in ipairs(r) do
 			for i in ipairs(l) do
@@ -216,8 +216,8 @@ local function sort_by_hue(tbl)
 	if debug then io.write('sort by hue') end
 	local result = clone(tbl)
 	table.sort(result, function(e1, e2)
-		h1, _, _ = colors.rgb_string_to_hsl(e1[2])
-		h2, _, _ = colors.rgb_string_to_hsl(e2[2])
+		local h1, _, _ = colors.rgb_string_to_hsl(e1[2])
+		local h2, _, _ = colors.rgb_string_to_hsl(e2[2])
 		return h1 < h2
 	end)
 	return result
@@ -227,8 +227,8 @@ local function sort_by_saturation(tbl)
 	if debug then io.write('sort by saturation') end
 	local result = clone(tbl)
 	table.sort(result, function(e1, e2)
-		_, s1, _ = colors.rgb_string_to_hsl(e1[2])
-		_, s2, _ = colors.rgb_string_to_hsl(e2[2])
+		local _, s1, _ = colors.rgb_string_to_hsl(e1[2])
+		local _, s2, _ = colors.rgb_string_to_hsl(e2[2])
 		return s1 < s2
 	end)
 	return result
@@ -236,10 +236,10 @@ end
 
 local function sort_by_lightness(tbl)
 	if debug then io.write('sort by lightness') end
-	result = clone(tbl)
+	local result = clone(tbl)
 	table.sort(result, function(e1, e2)
-		_, _, l1 = colors.rgb_string_to_hsl(e1[2])
-		_, _, l2 = colors.rgb_string_to_hsl(e2[2])
+		local _, _, l1 = colors.rgb_string_to_hsl(e1[2])
+		local _, _, l2 = colors.rgb_string_to_hsl(e2[2])
 		return l1 < l2
 	end)
 	return result
@@ -247,10 +247,10 @@ end
 
 local function sort_by_red(tbl)
 	if debug then io.write('sort by red') end
-	result = clone(tbl)
+	local result = clone(tbl)
 	table.sort(result, function(e1, e2)
-		r1, _, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
-		r2, _, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
+		local r1, _, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
+		local r2, _, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
 		return r1 < r2
 	end)
 	return result
@@ -258,10 +258,10 @@ end
 
 local function sort_by_green(tbl)
 	if debug then io.write('sort by green') end
-	result = clone(tbl)
+	local result = clone(tbl)
 	table.sort(result, function(e1, e2)
-		_, g1, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
-		_, g2, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
+		local _, g1, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
+		local _, g2, _ = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
 		return g1 < g2
 	end)
 	return result
@@ -269,10 +269,10 @@ end
 
 local function sort_by_blue(tbl)
 	if debug then io.write('sort by blue') end
-	result = clone(tbl)
+	local result = clone(tbl)
 	table.sort(result, function(e1, e2)
-		_, _, b1 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
-		_, _, b2 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
+		local _, _, b1 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e1[2]))
+		local _, _, b2 = colors.hsl_to_rgb(colors.rgb_string_to_hsl(e2[2]))
 		return b1 < b2
 	end)
 	return result
@@ -283,6 +283,7 @@ local function distanceHSL(tbl, index, value)
 	if debug then io.write('get color in vicinity by Hue+Saturation+Lightness') end
 	if index > #tbl then index = #tbl end
 	local value = value or 1.2
+	local result = clone(tbl)
 	local h1, s1, l1 = colors.rgb_string_to_hsl(result[index][2])
 	::restart::
 	for i, item in ipairs(result) do
@@ -346,8 +347,8 @@ local function print_colors(tbl, text)
 	result = result .. text
 	result = result .. string.format("%7s | %6s | %4s | %4s | %5s | %5s | %5s\n", "Hex", "H", "S", "L", "R", "G", "B")
 	for _, item in ipairs(tbl) do
-		h, s, l = colors.rgb_string_to_hsl(item[2])
-		r, g, b = colors.hsl_to_rgb(colors.rgb_string_to_hsl(item[2]))
+		local h, s, l = colors.rgb_string_to_hsl(item[2])
+		local r, g, b = colors.hsl_to_rgb(colors.rgb_string_to_hsl(item[2]))
 		result = result .. string.format("%7s | %-6.2f | %.2f | %.2f | %4.3f | %4.3f | %4.3f\n", item[2], h, s, l, r, g, b)
 	end
 	return result
