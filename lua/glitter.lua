@@ -463,9 +463,9 @@ local function load_syntax()
 		TabLineSel =	{ fg = bright_fg,	bg = default_bg,	style = none },
 		StatusLine =	{ fg = default_fg,	bg = darkest,	style = none },
 		StatusLineNC =	{ fg = gray,	bg = darkest,	style = none },
-		SpellBad =	{ fg = red,	bg = none,	style = underline },
+		SpellBad =	{ fg = red_bright,	bg = none,	style = underline },
 		SpellCap =	{ fg = purple,	bg = none,	style = underline },
-		SpellLocal =	{ fg = red,	bg = none,	style = underline },
+		SpellLocal =	{ fg = red_bright,	bg = none,	style = underline },
 		SpellRare =	{ fg = blue,	bg = none,	style = none },
 		Visual =	{ fg = darkest,	bg = visual },
 		-- VisualNOS =	{ fg = darkest,	bg = blue },
@@ -863,7 +863,16 @@ local function load_plugin_syntax()
 		VimwikiItalic =	{ fg = red_bright },
 		VimwikiBold =	{ fg = green_bright },
 		VimwikiLink =	{ fg = blue,		style = reverse },
-		NvimCmpGhostText =	{ fg = bright_bg2 }
+		NvimCmpGhostText =	{ fg = bright_bg2 },
+		MiniDiffSignAdd =	{ fg = default_bg, bg = green_bright },
+		MiniDiffSignChange =	{ fg = default_bg, bg = blue_bright },
+		MiniDiffSignDelete =	{ fg = default_bg, bg = red },
+		MiniDiffOverAdd =	{ fg = green_bright },
+		MiniDiffOverChange =	{ fg = bright_fg },
+		MiniDiffOverChangeBuf =	{ fg = bright_fg },
+		MiniDiffOverContext =	{ fg = gray },
+		MiniDiffOverContextBuf =	{ fg = gray },
+		MiniDiffOverDelete  =	{ fg = red },
 	}
 	return plugin_syntax
 end
